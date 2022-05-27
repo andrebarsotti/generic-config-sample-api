@@ -17,6 +17,11 @@ public class FiltroTests
     {
         IFiltro filtro = FiltroFaker.GerarFiltro(tipo);
 
+        ValidarFiltro(filtro);
+    }
+
+    public static void ValidarFiltro(IFiltro filtro)
+    {
         switch (filtro.Tipo)
         {
             case Tipo.Lista:

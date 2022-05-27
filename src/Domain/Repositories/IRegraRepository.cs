@@ -4,7 +4,7 @@ namespace Domain.Repositories
 {
     public interface IRegraRepository
     {
-        Regra Add(Regra valor);
-        Regra GetRegraById(Regra valor);
+        void Add(Regra valor);
+        Regra GetRegraById(string id);
     }
 }
