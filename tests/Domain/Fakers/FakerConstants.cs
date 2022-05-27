@@ -1,7 +1,6 @@
-﻿namespace DomainTests.Fakers
+﻿namespace Domain.Fakers;
+
+internal static class FakerConstants
 {
-    internal static class FakerConstants
-    {
-        public const string Locale = "ptBr";
-    }
+    public const string Locale = "pt_BR";
 }

@@ -10,5 +10,5 @@ public class RegrasExclusaoPerformance
 
     public string IncluidoPor { get; set; }
 
-    public IEnumerable<IFiltro> Filtros { get; set; }
+    public ICollection<IFiltro> Filtros { get; set; }
 }

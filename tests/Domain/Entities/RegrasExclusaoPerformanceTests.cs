@@ -1,7 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
+
 using Bogus;
-using Domain.Enums;
-using DomainTests.Fakers;
+
+using Domain.Fakers;
+
+using FluentAssertions;
 
 using Xunit;
 
@@ -25,7 +29,6 @@ public class RegrasExclusaoPerformanceTests
 
         FiltroLista filtro = new()
         {
-            Tipo = Tipo.Lista,
             Nome = _faker.Lorem.Sentence(),
             Valor = lista
         };
@@ -33,8 +36,42 @@ public class RegrasExclusaoPerformanceTests
         // Execute
         RegrasExclusaoPerformance regra = new();
         regra.Filtros = new List<IFiltro>() { filtro };
-    
+
         // Validate
-        //regra.Filtros.Should()
+        regra.Filtros.Single().Should().BeSameAs(filtro);
+    }
+
+    [Fact]
+    public void IncluirUmItemDoTipoRangeNoFiltro()
+    {
+        FiltroRange filtro = new()
+        {
+            Nome = _faker.Lorem.Sentence(),
+            Valor = new RangeFaker()
+        };
+
+        // Execute
+        RegrasExclusaoPerformance regra = new();
+        regra.Filtros = new List<IFiltro>() { filtro };
+
+        // Validate
+        regra.Filtros.Single().Should().BeSameAs(filtro);
+    }
+
+    [Fact]
+    public void IncluirUmItemDoTipoValorNoFiltro()
+    {
+        FiltroValor filtro = new()
+        {
+            Nome = _faker.Lorem.Sentence(),
+            Valor = _faker.Lorem.Sentence()
+        };
+
+        // Execute
+        RegrasExclusaoPerformance regra = new();
+        regra.Filtros = new List<IFiltro>() { filtro };
+
+        // Validate
+        regra.Filtros.Single().Should().BeSameAs(filtro);
     }
 }

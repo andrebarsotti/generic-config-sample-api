@@ -12,18 +12,29 @@ public interface IFiltro<T> : IFiltro
     T Valor { get; } 
 }
 
-public class Filtro<T> : IFiltro<T>
+public abstract class Filtro<T> : IFiltro<T>
 {
-    public Tipo Tipo { get; set; }
-    public string Nome { get; set; }
-    public T Valor { get; set; } 
+    public abstract Tipo Tipo { get; }
+    
+    public virtual string Nome { get; set; }
+    
+    public virtual T Valor { get; set; } 
 }
 
-public class FiltroLista : Filtro<IEnumerable<ItemLista>> {}
+public class FiltroLista : Filtro<IEnumerable<ItemLista>>
+{
+    public override Tipo Tipo => Tipo.Lista;
+}
 
-public class FiltroRange : Filtro<Range> {}
+public class FiltroRange : Filtro<Range>
+{
+    public override Tipo Tipo => Tipo.Range;
+}
 
-public class FiltroValor : Filtro<string> {}
+public class FiltroValor : Filtro<string>
+{
+    public override Tipo Tipo => Tipo.Valor;
+}
 
 public class ItemLista
 {
