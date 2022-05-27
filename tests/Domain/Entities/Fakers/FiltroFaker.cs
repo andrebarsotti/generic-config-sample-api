@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿namespace Domain.Entities.Fakers;
+
+using System.Collections.Generic;
 
 using Bogus;
 
 using Domain.Enums;
-
-namespace Domain.Entities.Fakers;
 
 internal static class FiltroFaker
 {
@@ -13,20 +13,20 @@ internal static class FiltroFaker
     private static readonly FiltroRangeFaker _filtroRangeFaker = new();
     private static readonly FiltroValorFaker _filtroValorFaker = new();
 
-    public static IEnumerable<IFiltro> GerarListaDeFiltros()
+    public static IEnumerable<Filtro> GerarListaDeFiltros()
     {
-        var filtros = new List<IFiltro>();
-        var numeroMaximoItens = _faker.Random.Int(1, 10);
+        var filtros = new List<Filtro>();
+        var numeroMaximoItens = _faker.Random.Int(min: 1, max: 10);
 
-        for (var contador = 1; contador < numeroMaximoItens; contador++)
+        for (var contador = 0; contador < numeroMaximoItens; contador++)
             filtros.Add(GerarFiltro());
 
         return filtros;
     }
 
-    public static IFiltro GerarFiltro() => GerarFiltro(_faker.Random.Enum<Tipo>());
+    public static Filtro GerarFiltro() => GerarFiltro(_faker.Random.Enum<Tipo>());
 
-    public static IFiltro GerarFiltro(Tipo tipo) => tipo switch
+    public static Filtro GerarFiltro(Tipo tipo) => tipo switch
     {
         Tipo.Lista => _filtroListaFaker.Generate(),
         Tipo.Range => _filtroRangeFaker.Generate(),

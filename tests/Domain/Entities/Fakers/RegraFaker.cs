@@ -1,6 +1,6 @@
-﻿using Bogus;
+﻿namespace Domain.Entities.Fakers;
 
-namespace Domain.Entities.Fakers;
+using Bogus;
 
 public sealed class RegraFaker : Faker<Regra>
 {

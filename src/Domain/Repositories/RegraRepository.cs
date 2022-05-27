@@ -2,7 +2,7 @@
 
 namespace Domain.Repositories
 {
-    public interface IRegraRepository
+    public interface RegraRepository
     {
         void Add(Regra valor);
         Regra GetRegraById(string id);

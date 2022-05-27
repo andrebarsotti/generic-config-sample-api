@@ -1,34 +1,42 @@
-﻿using System;
+﻿namespace Repositories;
 
 using Domain.Entities;
-using Domain.Entities.Fakers;
 
 using FluentAssertions;
 
+using Repositories.Fixtures;
+
 using Xunit;
 
-namespace Repositories;
-
-public class RegraRepositoryTests
+public class RegraRepositoryTests : IClassFixture<RegraFixture>
 {
-    private readonly RegraRepository _repository;
+    private readonly RegraRepositoryMongoDB _repository;
+    private readonly RegraFixture _regraFixture;
 
-    public RegraRepositoryTests()
+    public RegraRepositoryTests(RegraFixture regraFixture)
     {
-        _repository = new RegraRepository();
+        _repository = new RegraRepositoryMongoDB();
+        _regraFixture = regraFixture;
     }
 
     [Fact]
-    public void AdicionarUmaRegraNoMongoEObterPorId()
+    public void AdicionarUmaRegraNoMongo()
     {
         // Setup
-        Regra regra = new RegraFaker();
+        Regra regra = _regraFixture.Regra;
 
         //Execução Add
         _repository.Add(regra);
 
         // Valiação GetById
         regra.Id.Should().NotBeNullOrEmpty();
+    }
+
+    [Fact]
+    public void ObterRegraPorIdNoMongo()
+    {
+        // Setup
+        Regra regra = _regraFixture.Regra;
 
         //Execução GetById
         var resultado = _repository.GetRegraById(regra.Id);
@@ -41,7 +49,7 @@ public class RegraRepositoryTests
                           .BeEquivalentTo(regra, config => config.Excluding(e => e.DataInclusao));
 
         // Validando o Filtro
-        foreach(IFiltro filtro in resultado.Filtros)
+        foreach (Filtro filtro in resultado.Filtros)
             FiltroTests.ValidarFiltro(filtro);
     }
 }

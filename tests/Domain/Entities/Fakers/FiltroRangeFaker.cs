@@ -1,6 +1,6 @@
-﻿using Bogus;
+﻿namespace Domain.Entities.Fakers;
 
-namespace Domain.Entities.Fakers;
+using Bogus;
 
 internal sealed class FiltroRangeFaker : Faker<FiltroRange>
 {

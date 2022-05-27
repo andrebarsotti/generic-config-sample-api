@@ -1,11 +1,11 @@
+namespace Domain.Entities;
+
 using Domain.Entities.Fakers;
 using Domain.Enums;
 
 using FluentAssertions;
 
 using Xunit;
-
-namespace Domain.Entities;
 
 public class FiltroTests
 {
@@ -15,12 +15,12 @@ public class FiltroTests
     [InlineData(Tipo.Valor)]
     public void ConverterParaTipoEspecifico(Tipo tipo)
     {
-        IFiltro filtro = FiltroFaker.GerarFiltro(tipo);
+        Filtro filtro = FiltroFaker.GerarFiltro(tipo);
 
         ValidarFiltro(filtro);
     }
 
-    public static void ValidarFiltro(IFiltro filtro)
+    public static void ValidarFiltro(Filtro filtro)
     {
         switch (filtro.Tipo)
         {
@@ -36,7 +36,7 @@ public class FiltroTests
         }
     }
 
-    private static void ValidarTipoValor(IFiltro filtro)
+    private static void ValidarTipoValor(Filtro filtro)
     {
         FiltroValor filtroConvertido = (FiltroValor)filtro;
 
@@ -44,7 +44,7 @@ public class FiltroTests
         filtroConvertido.Valor.Should().NotBeNullOrEmpty();
     }
 
-    private static void ValidarTipoRange(IFiltro filtro)
+    private static void ValidarTipoRange(Filtro filtro)
     {
         FiltroRange filtroConvertido = (FiltroRange)filtro;
 
@@ -55,7 +55,7 @@ public class FiltroTests
                                            .BeGreaterThan(filtroConvertido.Valor.De);
     }
 
-    private static void ValidarTipoLista(IFiltro filtro)
+    private static void ValidarTipoLista(Filtro filtro)
     {
         FiltroLista filtroConvertido = (FiltroLista)filtro;
 
