@@ -13,7 +13,7 @@ internal static class FiltroFaker
     private static readonly FiltroRangeFaker _filtroRangeFaker = new();
     private static readonly FiltroValorFaker _filtroValorFaker = new();
 
-    public static IEnumerable<IFiltro> GetFiltros()
+    public static IEnumerable<IFiltro> GerarListaDeFiltros()
     {
         var filtros = new List<IFiltro>();
         var numeroMaximoItens = _faker.Random.Int(1, 10);
