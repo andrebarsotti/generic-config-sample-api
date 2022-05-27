@@ -1,8 +1,8 @@
 ﻿using Bogus;
 
-namespace Domain.Fakers;
+namespace Domain.Entities.Fakers;
 
-internal class RangeFaker : Faker<Entities.Range>
+internal sealed class RangeFaker : Faker<Range>
 {
     public RangeFaker() : base(FakerConstants.Locale)
     {

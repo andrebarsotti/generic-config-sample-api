@@ -1,8 +1,8 @@
-﻿using Bogus;
-using Domain.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Domain.Fakers;
+using Bogus;
+
+namespace Domain.Entities.Fakers;
 
 internal sealed class ItemListaFaker : Faker<ItemLista>
 {
@@ -12,9 +12,9 @@ internal sealed class ItemListaFaker : Faker<ItemLista>
         RuleFor(e => e.Descricao, (fk) => fk.Commerce.Department());
     }
 
-    public static IEnumerable<ItemLista> GenerateList() => GenerateList((new Faker()).Random.Int(0, 10));
+    public static IEnumerable<ItemLista> GerarLista() => GerarLista((new Faker()).Random.Int(1, 10));
 
-    public static IEnumerable<ItemLista> GenerateList(int qtd)
+    public static IEnumerable<ItemLista> GerarLista(int qtd)
     {
         ItemListaFaker faker = new();
         return faker.Generate(qtd);
