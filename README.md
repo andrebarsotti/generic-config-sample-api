@@ -1,4 +1,4 @@
-# Estudo de registro de metadado no mongo
+# Estudo de registro de metadado no MongoDB
 
 ## Sobre
 
