@@ -17,7 +17,7 @@ public interface Filtro<T> : Filtro
 }
 
 [Serializable]
-public abstract class FiltroAbstraction<T> : Filtro<T>
+public abstract class FiltroAbstrato<T> : Filtro<T>
 {
     [BsonElement("tipo", Order = 1)]
     [BsonRepresentation(BsonType.String)]
