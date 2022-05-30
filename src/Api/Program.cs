@@ -1,3 +1,8 @@
+using Domain.Dto;
+using Domain.Validators;
+
+using FluentValidation;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,6 +14,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped <Domain.Services.IRegrasService, Domain.Services.RegrasService>();
 builder.Services.AddScoped<Domain.Repositories.RegraRepository, Repositories.RegraRepositoryMongoDB>();
+builder.Services.AddScoped<IValidator<RegraDto>, RegraDtoValidator>();
 
 var app = builder.Build();
 

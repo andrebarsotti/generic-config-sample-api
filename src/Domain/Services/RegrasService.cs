@@ -4,20 +4,25 @@ using Domain.Entities;
 using Domain.Mappers;
 using Domain.Repositories;
 
+using FluentValidation;
+
 namespace Domain.Services;
 
 public class RegrasService : IRegrasService
 {
     private readonly RegraRepository _repositories;
+    private readonly IValidator<RegraDto> _validator;
 
-    public RegrasService(RegraRepository repositories)
+    public RegrasService(RegraRepository repositories,
+                         IValidator<RegraDto> validator)
     {
         _repositories = repositories;
+        _validator = validator;
     }
 
     public Regra Adicionar(RegraDto dto)
     {
-        // Aplicar Throw Validator
+        _validator.ValidateAndThrow(dto);
 
         Regra regra = RegraDtoMapper.ToRegra(dto);
         regra.DataInclusao = DateTime.UtcNow;
