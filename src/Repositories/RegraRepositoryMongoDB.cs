@@ -1,5 +1,8 @@
 ﻿namespace Repositories;
 
+using System.Collections.Generic;
+
+using Domain.Dto;
 using Domain.Entities;
 using Domain.Repositories;
 
@@ -23,10 +26,25 @@ public class RegraRepositoryMongoDB : RegraRepository
         _colecao.InsertOne(valor);
     }
 
+    public IEnumerable<RegraResumoDto> GetAll()
+    {
+        var projectionBuilder = Builders<Regra>.Projection
+                                        .Include(e => e.Id)
+                                        .Include(e => e.Nome)
+                                        .Include(e => e.DataInclusao)
+                                        .Include(e => e.IncluidoPor);
+
+
+        var retorno = _colecao.Find(Builders<Regra>.Filter.Empty)
+                              .Project<RegraResumoDto>(projection: projectionBuilder);
+        
+        return retorno.ToList();
+    }
+
     public Regra GetRegraById(string id)
     {
-        var filtro = Builders<Regra>.Filter.Eq(e => e.Id, id);
-        var retorno = _colecao.Find(filtro);
+        FilterDefinition<Regra> filtro = Builders<Regra>.Filter.Eq(e => e.Id, id);
+        IFindFluent<Regra, Regra> retorno = _colecao.Find(filtro);
         return retorno.FirstOrDefault();
     }
 }

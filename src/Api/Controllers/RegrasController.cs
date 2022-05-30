@@ -17,13 +17,13 @@ namespace Api.Controllers;
 [ApiController]
 public class RegrasController : ControllerBase
 {
-    private readonly IRegrasService _servie;
+    private readonly IRegrasService _service;
     private readonly IValidator<RegraDto> _validator;
 
     public RegrasController(IRegrasService servie,
                             IValidator<RegraDto> validator)
     {
-        _servie = servie;
+        _service = servie;
         _validator = validator;
     }
 
@@ -37,11 +37,22 @@ public class RegrasController : ControllerBase
 
         if (validation.IsValid)
         {
-            Regra regra = _servie.Adicionar(regraDto);
+            Regra regra = _service.Adicionar(regraDto);
 
-            return Ok(regra);
+            return Ok(regra.Id);
         }
 
         return BadRequest(validation.Errors);
+    }
+
+    [HttpGet]
+    public IActionResult Get() => Ok(_service.ListarTodas());
+
+    [HttpGet("{id}")]
+    public IActionResult Get(string id)
+    {
+        Regra regra = _service.ObterPorId(id);
+
+        return regra is not null ? Ok(regra) : NotFound();
     }
 }

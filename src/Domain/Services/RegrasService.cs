@@ -30,4 +30,10 @@ public class RegrasService : IRegrasService
         _repositories.Add(regra);
         return regra;
     }
+
+    public Regra ObterPorId(string id)
+        => _repositories.GetRegraById(id);
+
+    public IEnumerable<RegraResumoDto> ListarTodas()
+        => _repositories.GetAll();
 }
