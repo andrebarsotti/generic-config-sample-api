@@ -2,7 +2,7 @@
 
 namespace Api.ViewModels;
 
-public class RegrasVM
+public class RegraVM
 {
     [JsonPropertyName("nome")]
     public virtual string? Nome { get; set; }

@@ -13,13 +13,3 @@ public class FiltroListaValidator : AbstractValidator<FiltroLista>
         RuleForEach(e => e.Valor).SetValidator(new ItemListaValidator());
     }
 }
-
-
-public class ItemListaValidator : AbstractValidator<ItemLista>
-{
-    public ItemListaValidator()
-    {
-        RuleFor(e => e.Id).GreaterThan(0);
-        RuleFor(e => e.Descricao).NotNull().NotEmpty();
-    }
-}

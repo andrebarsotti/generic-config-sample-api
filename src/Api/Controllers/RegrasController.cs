@@ -28,7 +28,7 @@ public class RegrasController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Post([FromBody] RegrasVM model)
+    public IActionResult Post([FromBody] RegraVM model)
     {
 
         RegraDto regraDto = model.ToRegraDto();
