@@ -34,7 +34,6 @@ public class RegraRepositoryMongoDB : RegraRepository
                                         .Include(e => e.DataInclusao)
                                         .Include(e => e.IncluidoPor);
 
-
         var retorno = _colecao.Find(Builders<Regra>.Filter.Empty)
                               .Project<RegraResumoDto>(projection: projectionBuilder);
         
