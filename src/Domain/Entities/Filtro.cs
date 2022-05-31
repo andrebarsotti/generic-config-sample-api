@@ -5,6 +5,7 @@ using Domain.Enums;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
+//[BsonKnownTypes(typeof(FiltroRange), typeof(FiltroValor), typeof(FiltroLista))]
 public interface Filtro
 {
     Tipo Tipo { get; }

@@ -1,7 +1,11 @@
 using Domain.Dto;
+using Domain.Serialization;
 using Domain.Validators;
 
 using FluentValidation;
+
+
+EntitiesSerializationMapper.MapEntities();
 
 var builder = WebApplication.CreateBuilder(args);
 

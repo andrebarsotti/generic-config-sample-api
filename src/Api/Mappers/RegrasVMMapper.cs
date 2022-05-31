@@ -49,7 +49,7 @@ public static class RegrasVMMapper
         filtrosRegra.Add(filtroConvertido);
     }
 
-    private static Filtro ConverterFiltroValor(FiltroVM filtro)
+    private static Filtro ConverterFiltroLista(FiltroVM filtro)
     {
         IEnumerable<ItemLista> lista;
 
@@ -97,7 +97,7 @@ public static class RegrasVMMapper
         return filtroRange;
     }
 
-    private static Filtro ConverterFiltroLista(FiltroVM filtro)
+    private static Filtro ConverterFiltroValor(FiltroVM filtro)
     {
         var valor = string.Empty;
 
