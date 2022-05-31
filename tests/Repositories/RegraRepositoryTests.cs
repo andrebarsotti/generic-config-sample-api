@@ -52,4 +52,14 @@ public class RegraRepositoryTests : IClassFixture<RegraFixture>
         foreach (Filtro filtro in resultado.Filtros)
             FiltroTests.ValidarFiltro(filtro);
     }
+
+    [Fact]
+    public void ListarTodasAsRegrasCadastradas()
+    {
+        // Execução
+        var resultado = _repository.GetAll();
+
+        // Validação
+        resultado.Should().NotBeNullOrEmpty();
+    }
 }
