@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities.Fakers;
+﻿using Domain.Fakers;
+
+namespace Domain.Entities.Fakers;
 
 using Bogus;
 

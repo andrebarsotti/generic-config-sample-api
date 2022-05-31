@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities.Fakers;
+﻿namespace Domain.Fakers;
 
 internal static class FakerConstants
 {

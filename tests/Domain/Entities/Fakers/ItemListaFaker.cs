@@ -2,6 +2,8 @@
 
 using Bogus;
 
+using Domain.Fakers;
+
 namespace Domain.Entities.Fakers;
 
 internal sealed class ItemListaFaker : Faker<ItemLista>
