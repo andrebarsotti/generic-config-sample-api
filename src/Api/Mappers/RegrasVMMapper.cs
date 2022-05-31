@@ -21,30 +21,22 @@ public static class RegrasVMMapper
             Filtros = filtrosRegra
         };
 
-        foreach(FiltroVM filtro in model.Filtros)
-            ConverterFiltro(filtro, filtrosRegra);
+        if (model.Filtros is not null)
+            foreach(FiltroVM filtro in model.Filtros)
+                ConverterFiltro(filtro, filtrosRegra);
 
         return regra;
     }
 
     private static void ConverterFiltro(FiltroVM filtro, List<Filtro> filtrosRegra)
     {
-        Filtro filtroConvertido;
-
-        switch (filtro.Tipo)
+        Filtro filtroConvertido = filtro.Tipo switch
         {
-            case Tipo.Lista:
-                filtroConvertido = ConverterFiltroLista(filtro);
-                break;
-            case Tipo.Range:
-                filtroConvertido = ConverterFiltroRange(filtro);
-                break;
-            case Tipo.Valor:
-                filtroConvertido = ConverterFiltroValor(filtro);
-                break;
-            default:
-                throw new InvalidDataException();
-        }
+            Tipo.Lista => ConverterFiltroLista(filtro),
+            Tipo.Range => ConverterFiltroRange(filtro),
+            Tipo.Valor => ConverterFiltroValor(filtro),
+            _ => throw new InvalidDataException(),
+        };
 
         filtrosRegra.Add(filtroConvertido);
     }
@@ -113,5 +105,83 @@ public static class RegrasVMMapper
         };
 
         return filtroValor;
+    }
+
+    public static RegrasVM ToRegraVM(this Regra regra)
+    {
+        List<FiltroVM> filtrosVM = new();
+        RegrasVM regraVM = new()
+        {
+            Nome = regra.Nome,
+            DataInclusao = regra.DataInclusao.ToLocalTime(),
+            IncluidoPor = regra.IncluidoPor,
+            Filtros = filtrosVM
+        };
+
+        foreach(Filtro filtro in regra.Filtros)
+            ConverterFiltro(filtro, filtrosVM);
+
+        return regraVM;
+    }
+
+    private static void ConverterFiltro(Filtro filtro, List<FiltroVM> filtrosVM)
+    {
+        FiltroVM filtroConvertido = filtro.Tipo switch
+        {
+            Tipo.Lista => ConverterFiltroLista(filtro),
+            Tipo.Range => ConverterFiltroRange(filtro),
+            Tipo.Valor => ConverterFiltroValor(filtro),
+            _ => throw new InvalidDataException(),
+        };
+
+        filtrosVM.Add(filtroConvertido);
+    }
+
+    private static FiltroVM ConverterFiltroValor(Filtro filtro)
+    {
+        FiltroValor filtroValor = (FiltroValor)filtro;
+
+        return new FiltroVM()
+        {
+            Tipo = filtroValor.Tipo,
+            Nome = filtroValor.Nome,
+            Valor = JsonSerializer.SerializeToElement(filtroValor.Valor)
+        };
+    }
+
+    private static FiltroVM ConverterFiltroRange(Filtro filtro)
+    {
+        FiltroRange filtroRange = (FiltroRange)filtro;
+
+        RangeVM rangeVM = new()
+        {
+            De = filtroRange.Valor.De,
+            Ate = filtroRange.Valor.Ate
+        };
+
+        return new FiltroVM()
+        {
+            Tipo = filtroRange.Tipo,
+            Nome = filtroRange.Nome,
+            Valor = JsonSerializer.SerializeToElement(rangeVM)
+        };
+    }
+
+    private static FiltroVM ConverterFiltroLista(Filtro filtro)
+    {
+        FiltroLista filtroLista = (FiltroLista)filtro;
+
+        List<ItemListaVM> listaVM = filtroLista.Valor.Select(item => new ItemListaVM
+        {
+            Id = item.Id,
+            Descricao = item.Descricao
+        }).ToList();
+
+        return new FiltroVM()
+        {
+            Tipo = filtroLista.Tipo,
+            Nome = filtroLista.Nome,
+            Valor = JsonSerializer.SerializeToElement(listaVM)
+        };
     }
 }

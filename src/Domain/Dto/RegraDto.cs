@@ -4,10 +4,10 @@ namespace Domain.Dto
 {
     public class RegraDto
     {
-        public virtual string Nome { get; set; }
+        public virtual string? Nome { get; set; }
 
-        public virtual string Responsavel { get; set; }
+        public virtual string? Responsavel { get; set; }
 
-        public virtual ICollection<Filtro> Filtros { get; set; }
+        public virtual ICollection<Filtro>? Filtros { get; set; }
     }
 }

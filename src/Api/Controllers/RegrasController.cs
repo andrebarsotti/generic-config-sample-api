@@ -32,6 +32,7 @@ public class RegrasController : ControllerBase
     {
 
         RegraDto regraDto = RegrasVMMapper.ToRegraDto(model);
+        regraDto.Responsavel = "João da Silva";
 
         ValidationResult validation = _validator.Validate(regraDto);
 
@@ -53,6 +54,6 @@ public class RegrasController : ControllerBase
     {
         Regra regra = _service.ObterPorId(id);
 
-        return regra is not null ? Ok(regra) : NotFound();
+        return regra is not null ? Ok(regra.ToRegraVM()) : NotFound();
     }
 }
