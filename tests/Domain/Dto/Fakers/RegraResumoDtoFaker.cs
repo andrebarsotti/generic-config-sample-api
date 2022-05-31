@@ -7,7 +7,7 @@ using Domain.Fakers;
 
 namespace DomainTests.Dto.Fakers;
 
-internal sealed class RegraResumoDtoFaker : Faker<RegraResumoDto>
+public sealed class RegraResumoDtoFaker : Faker<RegraResumoDto>
 {
     public RegraResumoDtoFaker() : base(FakerConstants.Locale)
     {

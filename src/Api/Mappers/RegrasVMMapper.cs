@@ -12,7 +12,7 @@ namespace Api.Mappers;
 
 public static class RegrasVMMapper
 {
-    public static RegraDto ToRegraDto(this RegrasVM model)
+    public static RegraDto ToRegraDto(this RegraVM model)
     {
         List<Filtro> filtrosRegra = new();
         RegraDto regra = new()
@@ -107,10 +107,10 @@ public static class RegrasVMMapper
         return filtroValor;
     }
 
-    public static RegrasVM ToRegraVM(this Regra regra)
+    public static RegraVM ToRegraVM(this Regra regra)
     {
         List<FiltroVM> filtrosVM = new();
-        RegrasVM regraVM = new()
+        RegraVM regraVm = new()
         {
             Nome = regra.Nome,
             DataInclusao = regra.DataInclusao.ToLocalTime(),
@@ -121,7 +121,7 @@ public static class RegrasVMMapper
         foreach(Filtro filtro in regra.Filtros)
             ConverterFiltro(filtro, filtrosVM);
 
-        return regraVM;
+        return regraVm;
     }
 
     private static void ConverterFiltro(Filtro filtro, List<FiltroVM> filtrosVM)
