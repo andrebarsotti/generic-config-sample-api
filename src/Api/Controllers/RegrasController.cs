@@ -31,7 +31,7 @@ public class RegrasController : ControllerBase
     public IActionResult Post([FromBody] RegrasVM model)
     {
 
-        RegraDto regraDto = RegrasVMMapper.ToRegraDto(model);
+        RegraDto regraDto = model.ToRegraDto();
         regraDto.Responsavel = "João da Silva";
 
         ValidationResult validation = _validator.Validate(regraDto);

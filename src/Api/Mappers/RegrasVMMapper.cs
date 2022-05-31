@@ -12,7 +12,7 @@ namespace Api.Mappers;
 
 public static class RegrasVMMapper
 {
-    public static RegraDto ToRegraDto(RegrasVM model)
+    public static RegraDto ToRegraDto(this RegrasVM model)
     {
         List<Filtro> filtrosRegra = new();
         RegraDto regra = new()
