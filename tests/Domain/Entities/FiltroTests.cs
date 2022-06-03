@@ -20,6 +20,7 @@ public class FiltroTests
         ValidarFiltro(filtro);
     }
 
+    #pragma warning disable xUnit1013
     public static void ValidarFiltro(Filtro filtro)
     {
         switch (filtro.Tipo)

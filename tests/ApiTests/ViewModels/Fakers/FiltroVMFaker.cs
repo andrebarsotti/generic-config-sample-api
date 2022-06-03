@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Text.Json;
 
 using Api.Fakers;
 
@@ -23,7 +24,8 @@ public class FiltroVMFaker : Faker<FiltroVM>
         {
             Tipo.Lista => GerarLista(),
             Tipo.Range => GerarRange(),
-            Tipo.Valor => JsonSerializer.SerializeToElement(fk.Lorem.Sentence())
+            Tipo.Valor => JsonSerializer.SerializeToElement(fk.Lorem.Sentence()),
+            _ => throw new NotImplementedException()
         }; 
     }
 
