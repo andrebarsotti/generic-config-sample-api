@@ -15,8 +15,8 @@ public class RegraRepositoryTests : IClassFixture<RegraFixture>
 
     public RegraRepositoryTests(RegraFixture regraFixture)
     {
-        _repository = new RegraRepositoryMongoDB();
         _regraFixture = regraFixture;
+        _repository = new RegraRepositoryMongoDB(regraFixture.MongoDatabase);
     }
 
     [Fact]

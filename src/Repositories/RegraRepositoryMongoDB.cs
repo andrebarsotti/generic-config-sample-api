@@ -1,8 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-
-using Repositories.Configurations;
-
-namespace Repositories;
+﻿namespace Repositories;
 
 using System.Collections.Generic;
 
