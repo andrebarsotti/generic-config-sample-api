@@ -11,24 +11,22 @@ using Domain.Entities.Fakers;
 
 public class RegraFixture: IDisposable
 {
-    private readonly Regra _regra;
     private readonly MongoClient _mongoClient;
     private readonly string _databaseName;
-    private readonly IMongoDatabase _mongoDatabase;
 
     public RegraFixture()
     {
         _databaseName = $"estudos_mongo{(new Faker()).Random.Hash(length: 10)}";
-        _regra = new RegraFaker();
+        Regra = new RegraFaker();
         _mongoClient = new MongoClient("mongodb://localhost:27017");
-        _mongoDatabase = _mongoClient.GetDatabase(_databaseName);
+        MongoDatabase = _mongoClient.GetDatabase(_databaseName);
     }
 
-    public Regra Regra => _regra;
+    public Regra Regra { get; }
 
     public IMongoClient MongoClient => _mongoClient;
 
-    public IMongoDatabase MongoDatabase => _mongoDatabase;
+    public IMongoDatabase MongoDatabase { get; }
 
     private void ReleaseUnmanagedResources()
     {
