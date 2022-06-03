@@ -4,6 +4,8 @@ using Domain.Validators;
 
 using FluentValidation;
 
+using Repositories.Extensions;
+
 
 EntitiesSerializationMapper.MapEntities();
 
@@ -16,8 +18,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddMongoDBRepositories(builder.Configuration);
 builder.Services.AddScoped <Domain.Services.IRegrasService, Domain.Services.RegrasService>();
-builder.Services.AddScoped<Domain.Repositories.RegraRepository, Repositories.RegraRepositoryMongoDB>();
 builder.Services.AddScoped<IValidator<RegraDto>, RegraDtoValidator>();
 
 var app = builder.Build();

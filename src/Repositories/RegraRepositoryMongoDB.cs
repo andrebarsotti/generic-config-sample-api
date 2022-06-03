@@ -1,4 +1,8 @@
-﻿namespace Repositories;
+﻿using Microsoft.Extensions.Options;
+
+using Repositories.Configurations;
+
+namespace Repositories;
 
 using System.Collections.Generic;
 
@@ -10,15 +14,11 @@ using MongoDB.Driver;
 
 public class RegraRepositoryMongoDB : RegraRepository
 {
-    private readonly MongoClient _client;
-    private readonly IMongoDatabase _database;
     private readonly IMongoCollection<Regra> _colecao;
 
-    public RegraRepositoryMongoDB()
+    public RegraRepositoryMongoDB(IMongoDatabase database)
     {
-        _client = new MongoClient("mongodb://localhost:27017/?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000&3t.uriVersion=3&3t.connection.name=LOCALHOST&3t.alwaysShowAuthDB=true&3t.alwaysShowDBFromUserRole=true");
-        _database = _client.GetDatabase("estudo_mongo_metadado");
-        _colecao = _database.GetCollection<Regra>("Regras");
+        _colecao = database.GetCollection<Regra>(DBConstants.RegrasEntity);
     }
 
     public void Add(Regra valor)
