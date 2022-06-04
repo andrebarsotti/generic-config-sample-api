@@ -64,6 +64,7 @@ public static class ServiceExtension
         {
             cm.MapMember(ent => ent.Tipo)
                 .SetSerializer(new EnumSerializer<Tipo>(BsonType.String))
+                .SetElementName("tipo")
                 .SetIsRequired(true)
                 .SetOrder(1);
             
@@ -89,7 +90,7 @@ public static class ServiceExtension
         
             cm.MapMember(ent => ent.Id)
                 .SetIsRequired(true)
-                .SetElementName("id")
+                .SetElementName("_id")
                 .SetSerializer(new Int32Serializer(BsonType.Int32))
                 .SetOrder(1);
             
@@ -102,6 +103,7 @@ public static class ServiceExtension
         {
             cm.MapMember(ent => ent.Tipo)
                 .SetSerializer(new EnumSerializer<Tipo>(BsonType.String))
+                .SetElementName("tipo")
                 .SetIsRequired(true)
                 .SetOrder(1);
             
@@ -141,6 +143,7 @@ public static class ServiceExtension
         {
             cm.MapMember(ent => ent.Tipo)
                 .SetSerializer(new EnumSerializer<Tipo>(BsonType.String))
+                .SetElementName("tipo")
                 .SetIsRequired(true)
                 .SetOrder(1);
         
