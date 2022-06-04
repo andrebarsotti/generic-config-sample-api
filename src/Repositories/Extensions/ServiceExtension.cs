@@ -18,9 +18,9 @@ using Range = Domain.Entities.Range;
 
 namespace Repositories.Extensions;
 
-[ExcludeFromCodeCoverage]
 public static class ServiceExtension
 {
+    [ExcludeFromCodeCoverage]
     public static void AddMongoDBRepositories(this IServiceCollection services, IConfiguration configuration)
     {
         MapDatabaseEntities();

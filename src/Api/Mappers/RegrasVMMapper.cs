@@ -35,7 +35,6 @@ public static class RegrasVMMapper
             Tipo.Lista => ConverterFiltroLista(filtro),
             Tipo.Range => ConverterFiltroRange(filtro),
             Tipo.Valor => ConverterFiltroValor(filtro),
-            _ => throw new InvalidDataException(),
         };
 
         filtrosRegra.Add(filtroConvertido);
@@ -131,7 +130,6 @@ public static class RegrasVMMapper
             Tipo.Lista => ConverterFiltroLista(filtro),
             Tipo.Range => ConverterFiltroRange(filtro),
             Tipo.Valor => ConverterFiltroValor(filtro),
-            _ => throw new InvalidDataException(),
         };
 
         filtrosVM.Add(filtroConvertido);
