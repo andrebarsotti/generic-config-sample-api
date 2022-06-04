@@ -10,8 +10,4 @@
     <PackageReference Include="FluentValidation" Version="11.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Serialization" />
-  </ItemGroup>
-
 </Project>
