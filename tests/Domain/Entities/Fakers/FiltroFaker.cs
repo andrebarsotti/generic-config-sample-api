@@ -6,7 +6,7 @@ using Bogus;
 
 using Domain.Enums;
 
-internal static class FiltroFaker
+public static class FiltroFaker
 {
     private static readonly Faker _faker = new();
     private static readonly FiltroListaFaker _filtroListaFaker = new();

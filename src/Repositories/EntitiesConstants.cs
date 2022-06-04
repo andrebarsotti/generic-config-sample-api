@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities;
+﻿namespace Repositories;
 
 internal static class EntitiesConstants
 {

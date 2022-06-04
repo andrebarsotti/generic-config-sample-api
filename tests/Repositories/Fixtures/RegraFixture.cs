@@ -2,7 +2,11 @@
 
 using Bogus;
 
+using Domain.Enums;
+
 using MongoDB.Driver;
+
+using Repositories.Extensions;
 
 namespace Repositories.Fixtures;
 
@@ -16,8 +20,13 @@ public class RegraFixture: IDisposable
 
     public RegraFixture()
     {
-        _databaseName = $"estudos_mongo{(new Faker()).Random.Hash(length: 10)}";
+        ServiceExtension.MapDatabaseEntities();
+        
         Regra = new RegraFaker();
+        //Regra.Filtros.Clear();
+        //Regra.Filtros.Add(FiltroFaker.GerarFiltro(Tipo.Lista));
+        
+        _databaseName = $"estudos_mongo{(new Faker()).Random.Hash(length: 10)}";
         _mongoClient = new MongoClient("mongodb://localhost:27017");
         MongoDatabase = _mongoClient.GetDatabase(_databaseName);
     }
