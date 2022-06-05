@@ -1,7 +1,4 @@
-using Domain.Dto;
-using Domain.Validators;
-
-using FluentValidation;
+using Domain.Extensions;
 
 using Repositories.Extensions;
 
@@ -15,8 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddMongoDBRepositories(builder.Configuration);
-builder.Services.AddScoped <Domain.Services.IRegrasService, Domain.Services.RegrasService>();
-builder.Services.AddScoped<IValidator<RegraDto>, RegraDtoValidator>();
+builder.Services.AddDomainServicesAndValidators();
 
 var app = builder.Build();
 
