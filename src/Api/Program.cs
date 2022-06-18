@@ -1,3 +1,5 @@
+using Api.Extensions;
+
 using Domain.Extensions;
 
 using Repositories.Extensions;
@@ -11,6 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddMappingProfiles();
 builder.Services.AddMongoDBRepositories(builder.Configuration);
 builder.Services.AddDomainServicesAndValidators();
 
