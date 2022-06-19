@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -20,19 +19,22 @@ using Xunit;
 
 namespace ApiTests.Mappers;
 
-public class RegrasVMMapperTests
+public class ViewModelProfileTests
 {
     private readonly IMapper _mapper;
 
-    public RegrasVMMapperTests()
+    public ViewModelProfileTests()
     {
         _mapper = new Mapper(new MapperConfiguration(cfg =>
         {
-            cfg.AddProfile<RegrasVMProfile>();
-            cfg.AddProfile<FiltroVMProfile>();
-            cfg.AddProfile<ItemListaVMProfile>();
-            cfg.AddProfile<RangeVMProfile>();
+            cfg.AddProfile<VieModelProfile>();
         }));
+    }
+
+    [Fact]
+    public void MappersTest()
+    {
+        _mapper.ConfigurationProvider.AssertConfigurationIsValid();
     }
 
     [Fact]

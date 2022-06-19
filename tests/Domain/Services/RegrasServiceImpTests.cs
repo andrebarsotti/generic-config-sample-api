@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 
+using AutoMapper;
+
 using Bogus;
 
 using Domain.Dto;
 using Domain.Dto.Fakers;
 using Domain.Entities;
 using Domain.Entities.Fakers;
+using Domain.Mappers;
 using Domain.Repositories;
 
 using DomainTests.Dto.Fakers;
@@ -20,15 +23,19 @@ using Xunit;
 namespace Domain.Services;
 
 
-public class RegrasServiceTests
+public class RegrasServiceImpTests
 {
     private readonly AutoMocker _autoMoq;
     private readonly Faker _faker;
 
-    public RegrasServiceTests()
+    public RegrasServiceImpTests()
     {
         _autoMoq = new AutoMocker();
         _faker = new Faker();
+        _autoMoq.Use<IMapper>(new Mapper(new MapperConfiguration(cfg =>
+        {
+            cfg.AddProfile<RegraDtoProfile>();
+        })));
     }
 
     [Fact]
@@ -42,7 +49,7 @@ public class RegrasServiceTests
             .Verifiable();
         
         // Execute
-        var service = _autoMoq.CreateInstance<RegrasService>();
+        var service = _autoMoq.CreateInstance<RegrasServiceImpl>();
         Regra resultado = service.Adicionar(dto);
 
         // Validar
@@ -67,7 +74,7 @@ public class RegrasServiceTests
             .Verifiable();
 
         // Execute
-        var service = _autoMoq.CreateInstance<RegrasService>();
+        var service = _autoMoq.CreateInstance<RegrasServiceImpl>();
         Regra resultado = service.ObterPorId(id);
 
         // Validar
@@ -87,7 +94,7 @@ public class RegrasServiceTests
             .Verifiable();
 
         // Execute
-        var service = _autoMoq.CreateInstance<RegrasService>();
+        var service = _autoMoq.CreateInstance<RegrasServiceImpl>();
         IEnumerable<RegraResumoDto> resultado = service.ListarTodas();
 
         // Validar

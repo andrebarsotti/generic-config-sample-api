@@ -1,6 +1,4 @@
-﻿
-using Api.Mappers;
-using Api.ViewModels;
+﻿using Api.ViewModels;
 
 using AutoMapper;
 
@@ -19,11 +17,11 @@ namespace Api.Controllers;
 [ApiController]
 public class RegrasController : ControllerBase
 {
-    private readonly IRegrasService _service;
+    private readonly RegrasService _service;
     private readonly IValidator<RegraDto> _validator;
     private readonly IMapper _mapper;
 
-    public RegrasController(IRegrasService servie,
+    public RegrasController(RegrasService servie,
                             IValidator<RegraDto> validator,
                             IMapper mapper)
     {
@@ -52,7 +50,7 @@ public class RegrasController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult Get() => Ok(_service.ListarTodas());
+    public IActionResult Get() => Ok(_mapper.Map<IEnumerable<RegraResumoVM>>(_service.ListarTodas()));
 
     [HttpGet("{id}")]
     public IActionResult Get(string id)
