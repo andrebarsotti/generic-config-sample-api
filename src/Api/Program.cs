@@ -14,8 +14,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddMappingProfiles();
-builder.Services.AddMongoDBRepositories(builder.Configuration);
 builder.Services.AddDomainServicesAndValidators();
+builder.Services.AddMongoDBRepositories(builder.Configuration);
 
 var app = builder.Build();
 

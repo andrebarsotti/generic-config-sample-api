@@ -1,0 +1,133 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
+
+using Api.Mappers;
+using Api.ViewModels;
+using Api.ViewModels.Fakers;
+
+using Domain.Dto;
+using Domain.Entities;
+using Domain.Entities.Fakers;
+using Domain.Enums;
+
+using FluentAssertions;
+
+using Xunit;
+
+namespace ApiTests.Mappers;
+
+public class RegrasVMMapperTests
+{
+    [Fact]
+    public void RegraVMToRegraDto_RegrasOk()
+    {
+        // Setup
+        RegraVM model = (new RegraVMFaker()).Generate($"default, {RegraVMFaker.ComUmFiltroDeCada}");
+
+        // Execute
+        RegraDto resultado = model.ToRegraDto();
+
+        // Validate
+        resultado.Should().NotBeNull()
+            .And
+            .BeEquivalentTo(model, cfg => cfg.Excluding(e => e.Filtros)
+                                                                                 .ExcludingMissingMembers());
+
+        ValidarFiltros(model.Filtros, resultado.Filtros);
+    }
+
+    private static void ValidarFiltros(IEnumerable<FiltroVM> filtrosVM, IEnumerable<Filtro>? filtros)
+    {
+        filtros.Should().NotBeNull();
+        
+        foreach (var filtroVM in filtrosVM)
+        {
+            Filtro filtro = filtros.First(filtro => filtro.Tipo == filtroVM.Tipo);
+            filtro.Should().BeEquivalentTo(filtroVM, cfg => cfg.Excluding(e => e.Valor));
+            
+            ValidarFiltro(filtroVM, filtro);
+        }
+    }
+
+    private static void ValidarFiltro(FiltroVM filtroVM, Filtro filtro)
+    {
+        switch (filtroVM.Tipo)
+        {
+            case Tipo.Lista:
+                ValidarFiltroLista(filtroVM, filtro);
+                break;
+            case Tipo.Range:
+                ValidarFiltroRange(filtroVM, filtro);
+                break;
+            case Tipo.Valor:
+                ValidarFiltroValor(filtroVM, filtro);
+                break;
+        }
+    }
+
+    private static void ValidarFiltroValor(FiltroVM filtroVM, Filtro filtro)
+    {
+        var valorVM = filtroVM.Valor.Deserialize<string>();
+        var valor = ((FiltroValor)filtro).Valor;
+
+        valor.Should().Be(valorVM);
+    }
+
+    private static void ValidarFiltroRange(FiltroVM filtroVM, Filtro filtro)
+    {
+        var rangeVm = filtroVM.Valor.Deserialize<RangeVM>();
+        var range = ((FiltroRange)filtro).Valor;
+
+        range.Should().BeEquivalentTo(rangeVm);
+    }
+
+    private static void ValidarFiltroLista(FiltroVM filtroVM, Filtro filtro)
+    {
+        var listaVM = filtroVM.Valor.Deserialize<IEnumerable<ItemListaVM>>();
+        var lista = ((FiltroLista)filtro).Valor;
+
+        lista.Should().BeEquivalentTo(listaVM);
+    }
+    
+    [Fact]
+    public void RegraVMToRegraDto_ListaInvalida()
+    {
+        // Setup
+        RegraVM model = (new RegraVMFaker()).Generate($"default, {RegraVMFaker.SemFiltros}");
+        FiltroVM filtro = (new FiltroVMFaker()).Generate(FiltroVMFaker.FiltroValor);
+        filtro.Tipo = Tipo.Lista;
+        model.Filtros.Add(filtro);
+
+        // Execute
+        RegraDto resultado = model.ToRegraDto();
+
+        // Validate
+        resultado.Should().NotBeNull()
+            .And
+            .BeEquivalentTo(model, cfg => cfg.Excluding(e => e.Filtros)
+                .ExcludingMissingMembers());
+        
+        var filtroLista = (FiltroLista)resultado.Filtros.First();
+        filtroLista.Should().BeEquivalentTo(filtro, cfg => cfg.Excluding(e => e.Valor));
+        filtroLista.Valor.Should().BeEmpty();
+    }    
+
+    [Fact]
+    public void RegraToRegraVM()
+    {
+        // Setup
+        Regra regra = (new RegraFaker())
+            .Generate($"default, {RegraFaker.RegraComId}, {RegraFaker.RegraComUmFiltroDeCada}");
+        
+        // Execute
+        RegraVM resultado = regra.ToRegraVM();
+        
+        // Validate
+        resultado.Should().BeEquivalentTo(regra, cfg => cfg.ExcludingMissingMembers()
+                                                                                             .Excluding(e => e.Filtros));
+        
+        ValidarFiltros(resultado.Filtros, regra.Filtros);
+    }
+}
