@@ -1,6 +1,9 @@
 ﻿
+using Api.Mappers;
 using Api.ViewModels;
 using Api.ViewModels.Fakers;
+
+using AutoMapper;
 
 using Bogus;
 
@@ -37,6 +40,13 @@ public class RegrasControllerTests
     {
         _autoMoq = new AutoMocker();
         _faker = new Faker();
+        _autoMoq.Use<IMapper>(new Mapper(new MapperConfiguration(cfg =>
+        {
+            cfg.AddProfile<RegrasVMProfile>();
+            cfg.AddProfile<FiltroVMProfile>();
+            cfg.AddProfile<ItemListaVMProfile>();
+            cfg.AddProfile<RangeVMProfile>();
+        })));
     }
 
     [Fact]

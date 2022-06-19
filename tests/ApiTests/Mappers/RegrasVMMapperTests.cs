@@ -7,6 +7,8 @@ using Api.Mappers;
 using Api.ViewModels;
 using Api.ViewModels.Fakers;
 
+using AutoMapper;
+
 using Domain.Dto;
 using Domain.Entities;
 using Domain.Entities.Fakers;
@@ -20,6 +22,19 @@ namespace ApiTests.Mappers;
 
 public class RegrasVMMapperTests
 {
+    private readonly IMapper _mapper;
+
+    public RegrasVMMapperTests()
+    {
+        _mapper = new Mapper(new MapperConfiguration(cfg =>
+        {
+            cfg.AddProfile<RegrasVMProfile>();
+            cfg.AddProfile<FiltroVMProfile>();
+            cfg.AddProfile<ItemListaVMProfile>();
+            cfg.AddProfile<RangeVMProfile>();
+        }));
+    }
+
     [Fact]
     public void RegraVMToRegraDto_RegrasOk()
     {
@@ -27,7 +42,7 @@ public class RegrasVMMapperTests
         RegraVM model = (new RegraVMFaker()).Generate($"default, {RegraVMFaker.ComUmFiltroDeCada}");
 
         // Execute
-        RegraDto resultado = model.ToRegraDto();
+        var resultado = _mapper.Map<RegraDto>(model);
 
         // Validate
         resultado.Should().NotBeNull()
@@ -101,7 +116,7 @@ public class RegrasVMMapperTests
         model.Filtros.Add(filtro);
 
         // Execute
-        RegraDto resultado = model.ToRegraDto();
+        var resultado = _mapper.Map<RegraDto>(model);
 
         // Validate
         resultado.Should().NotBeNull()
@@ -112,17 +127,43 @@ public class RegrasVMMapperTests
         var filtroLista = (FiltroLista)resultado.Filtros.First();
         filtroLista.Should().BeEquivalentTo(filtro, cfg => cfg.Excluding(e => e.Valor));
         filtroLista.Valor.Should().BeEmpty();
+    }
+    
+    [Fact]
+    public void RegraVMToRegraDto_RangeInvalido()
+    {
+        // Setup
+        RegraVM model = (new RegraVMFaker()).Generate($"default, {RegraVMFaker.SemFiltros}");
+        FiltroVM filtro = (new FiltroVMFaker()).Generate(FiltroVMFaker.FiltroValor);
+        filtro.Tipo = Tipo.Range;
+        model.Filtros.Add(filtro);
+
+        // Execute
+        var resultado = _mapper.Map<RegraDto>(model);
+        // RegraDto resultado = model.ToRegraDto();
+
+        // Validate
+        resultado.Should().NotBeNull()
+            .And
+            .BeEquivalentTo(model, cfg => cfg.Excluding(e => e.Filtros)
+                .ExcludingMissingMembers());
+        
+        var filtroLista = (FiltroRange)resultado.Filtros.First();
+        filtroLista.Should().BeEquivalentTo(filtro, cfg => cfg.Excluding(e => e.Valor));
+        filtroLista.Valor.De.Should().Be(0);
+        filtroLista.Valor.Ate.Should().Be(0);
     }    
 
     [Fact]
-    public void RegraToRegraVM()
+    public void RegraToRegraVM_RegraOK()
     {
         // Setup
         Regra regra = (new RegraFaker())
             .Generate($"default, {RegraFaker.RegraComId}, {RegraFaker.RegraComUmFiltroDeCada}");
         
         // Execute
-        RegraVM resultado = regra.ToRegraVM();
+        var resultado = _mapper.Map<RegraVM>(regra);
+        // RegraVM resultado = regra.ToRegraVM();
         
         // Validate
         resultado.Should().BeEquivalentTo(regra, cfg => cfg.ExcludingMissingMembers()
