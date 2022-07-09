@@ -11,9 +11,9 @@ using Range = Domain.Entities.Range;
 
 namespace Api.Mappers;
 
-public sealed class FiltroVMToFiltroConverter : ITypeConverter<FiltroVM, Filtro>
+public sealed class FiltroVMToFiltroConverter : ITypeConverter<FiltroVM, IFiltro>
 {
-    public Filtro Convert(FiltroVM source, Filtro destination, ResolutionContext context)
+    public IFiltro Convert(FiltroVM source, IFiltro destination, ResolutionContext context)
     =>  source.Tipo switch
         {
             Tipo.Lista => ConverterParaFiltroLista(source, context),
@@ -56,7 +56,7 @@ public sealed class FiltroVMToFiltroConverter : ITypeConverter<FiltroVM, Filtro>
         {
             Nome = source.Nome,
             Valor = context.Mapper.Map<IEnumerable<ItemLista>>(lista)
-        };;
+        };
     }
 
     private static IEnumerable<ItemListaVM> ConverterJsonElementParaItens(JsonElement valor)

@@ -1,14 +1,43 @@
-﻿using Domain.Dto;
+﻿
+using AutoMapper;
+
+using Domain.Dto;
 using Domain.Entities;
+using Domain.Repositories;
 
-namespace Domain.Services
+using FluentValidation;
+
+namespace Domain.Services;
+
+public class RegrasService : IRegrasService
 {
-    public interface RegrasService
-    {
-        Regra Adicionar(RegraDto dto);
-        
-        IEnumerable<RegraResumoDto> ListarTodas();
+    private readonly IRegraRepository _repositories;
+    private readonly IValidator<RegraDto> _validator;
+    private readonly IMapper _mapper;
 
-        Regra ObterPorId(string id);
+    public RegrasService(IRegraRepository repositories,
+                         IValidator<RegraDto> validator,
+                         IMapper mapper)
+    {
+        _repositories = repositories;
+        _validator = validator;
+        _mapper = mapper;
     }
+
+    public Regra Adicionar(RegraDto dto)
+    {
+        _validator.ValidateAndThrow(dto);
+
+        var regra = _mapper.Map<Regra>(dto);
+        regra.DataInclusao = DateTime.UtcNow;
+
+        _repositories.Add(regra);
+        return regra;
+    }
+
+    public Regra ObterPorId(string id)
+        => _repositories.GetRegraById(id);
+
+    public IEnumerable<RegraResumoDto> ListarTodas()
+        => _repositories.GetAll();
 }

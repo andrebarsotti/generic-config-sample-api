@@ -10,5 +10,5 @@ public class Regra
 
     public virtual string IncluidoPor { get; set; }
 
-    public virtual ICollection<Filtro> Filtros { get; set; }
+    public virtual ICollection<IFiltro> Filtros { get; set; }
 }

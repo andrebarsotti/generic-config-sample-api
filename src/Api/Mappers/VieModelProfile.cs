@@ -23,7 +23,7 @@ public sealed class VieModelProfile: Profile
 
         CreateMap<ItemListaVM, ItemLista>().ReverseMap();
  
-        CreateMap<FiltroVM, Filtro>().ConvertUsing<FiltroVMToFiltroConverter>();
-        CreateMap<Filtro, FiltroVM>().ConvertUsing<FiltroToFiltroVMConverter>();
+        CreateMap<FiltroVM, IFiltro>().ConvertUsing<FiltroVMToFiltroConverter>();
+        CreateMap<IFiltro, FiltroVM>().ConvertUsing<FiltroToFiltroVMConverter>();
     }
 }

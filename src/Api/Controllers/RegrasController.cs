@@ -17,11 +17,11 @@ namespace Api.Controllers;
 [ApiController]
 public class RegrasController : ControllerBase
 {
-    private readonly RegrasService _service;
+    private readonly IRegrasService _service;
     private readonly IValidator<RegraDto> _validator;
     private readonly IMapper _mapper;
 
-    public RegrasController(RegrasService servie,
+    public RegrasController(IRegrasService servie,
                             IValidator<RegraDto> validator,
                             IMapper mapper)
     {

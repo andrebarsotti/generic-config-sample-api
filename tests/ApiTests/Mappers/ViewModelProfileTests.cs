@@ -55,20 +55,20 @@ public class ViewModelProfileTests
         ValidarFiltros(model.Filtros, resultado.Filtros);
     }
 
-    private static void ValidarFiltros(IEnumerable<FiltroVM> filtrosVM, IEnumerable<Filtro>? filtros)
+    private static void ValidarFiltros(IEnumerable<FiltroVM> filtrosVM, IEnumerable<IFiltro>? filtros)
     {
         filtros.Should().NotBeNull();
         
         foreach (var filtroVM in filtrosVM)
         {
-            Filtro filtro = filtros.First(filtro => filtro.Tipo == filtroVM.Tipo);
+            IFiltro filtro = filtros.First(filtro => filtro.Tipo == filtroVM.Tipo);
             filtro.Should().BeEquivalentTo(filtroVM, cfg => cfg.Excluding(e => e.Valor));
             
             ValidarFiltro(filtroVM, filtro);
         }
     }
 
-    private static void ValidarFiltro(FiltroVM filtroVM, Filtro filtro)
+    private static void ValidarFiltro(FiltroVM filtroVM, IFiltro filtro)
     {
         switch (filtroVM.Tipo)
         {
@@ -84,7 +84,7 @@ public class ViewModelProfileTests
         }
     }
 
-    private static void ValidarFiltroValor(FiltroVM filtroVM, Filtro filtro)
+    private static void ValidarFiltroValor(FiltroVM filtroVM, IFiltro filtro)
     {
         var valorVM = filtroVM.Valor.Deserialize<string>();
         var valor = ((FiltroValor)filtro).Valor;
@@ -92,7 +92,7 @@ public class ViewModelProfileTests
         valor.Should().Be(valorVM);
     }
 
-    private static void ValidarFiltroRange(FiltroVM filtroVM, Filtro filtro)
+    private static void ValidarFiltroRange(FiltroVM filtroVM, IFiltro filtro)
     {
         var rangeVm = filtroVM.Valor.Deserialize<RangeVM>();
         var range = ((FiltroRange)filtro).Valor;
@@ -100,7 +100,7 @@ public class ViewModelProfileTests
         range.Should().BeEquivalentTo(rangeVm);
     }
 
-    private static void ValidarFiltroLista(FiltroVM filtroVM, Filtro filtro)
+    private static void ValidarFiltroLista(FiltroVM filtroVM, IFiltro filtro)
     {
         var listaVM = filtroVM.Valor.Deserialize<IEnumerable<ItemListaVM>>();
         var lista = ((FiltroLista)filtro).Valor;

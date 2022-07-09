@@ -11,9 +11,9 @@ using Range = Domain.Entities.Range;
 
 namespace Api.Mappers;
 
-public sealed class FiltroToFiltroVMConverter : ITypeConverter<Filtro, FiltroVM>
+public sealed class FiltroToFiltroVMConverter : ITypeConverter<IFiltro, FiltroVM>
 {
-    public FiltroVM Convert(Filtro source, FiltroVM destination, ResolutionContext context)
+    public FiltroVM Convert(IFiltro source, FiltroVM destination, ResolutionContext context)
         => new()
         {
             Tipo = source.Tipo,

@@ -48,8 +48,8 @@ public class RegraRepositoryTests : IClassFixture<RegraFixture>
                           .And
                           .BeEquivalentTo(regra, config => config.Excluding(e => e.DataInclusao));
 
-        // Validando o Filtro
-        foreach (Filtro filtro in resultado.Filtros)
+        // Validando o IFiltro
+        foreach (IFiltro filtro in resultado.Filtros)
             FiltroTests.ValidarFiltro(filtro);
     }
 

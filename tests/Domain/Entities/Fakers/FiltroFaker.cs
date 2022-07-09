@@ -13,9 +13,9 @@ public static class FiltroFaker
     private static readonly FiltroRangeFaker _filtroRangeFaker = new();
     private static readonly FiltroValorFaker _filtroValorFaker = new();
 
-    public static IEnumerable<Filtro> GerarListaDeFiltros()
+    public static IEnumerable<IFiltro> GerarListaDeFiltros()
     {
-        var filtros = new List<Filtro>();
+        var filtros = new List<IFiltro>();
         var numeroMaximoItens = _faker.Random.Int(min: 1, max: 10);
 
         for (var contador = 0; contador < numeroMaximoItens; contador++)
@@ -24,9 +24,9 @@ public static class FiltroFaker
         return filtros;
     }
 
-    public static Filtro GerarFiltro() => GerarFiltro(_faker.Random.Enum<Tipo>());
+    public static IFiltro GerarFiltro() => GerarFiltro(_faker.Random.Enum<Tipo>());
 
-    public static Filtro GerarFiltro(Tipo tipo) => tipo switch
+    public static IFiltro GerarFiltro(Tipo tipo) => tipo switch
     {
         Tipo.Lista => _filtroListaFaker.Generate(),
         Tipo.Range => _filtroRangeFaker.Generate(),

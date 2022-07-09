@@ -24,7 +24,7 @@ public sealed class RegraFaker : Faker<Regra>
         RuleSet(RegraComUmFiltroDeCada, set =>
                 set.RuleFor(e => e.Filtros, _ =>
                 {
-                    List<Filtro> filtros = new();
+                    List<IFiltro> filtros = new();
                     
                     filtros.Add(FiltroFaker.GerarFiltro(Tipo.Lista));
                     filtros.Add(FiltroFaker.GerarFiltro(Tipo.Range));

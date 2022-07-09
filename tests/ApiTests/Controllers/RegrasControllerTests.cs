@@ -57,7 +57,7 @@ public class RegrasControllerTests
             .Returns(new ValidationResult())
             .Verifiable();
 
-        Mock<RegrasService> serviceMock = _autoMoq.GetMock<RegrasService>();
+        Mock<IRegrasService> serviceMock = _autoMoq.GetMock<IRegrasService>();
         serviceMock.Setup(serv => serv.Adicionar(It.IsAny<RegraDto>()))
             .Returns(new Regra() { Id = _faker.Random.Hash() })
             .Verifiable();
@@ -89,7 +89,7 @@ public class RegrasControllerTests
             }))
             .Verifiable();
 
-        Mock<RegrasService> serviceMock = _autoMoq.GetMock<RegrasService>();
+        Mock<IRegrasService> serviceMock = _autoMoq.GetMock<IRegrasService>();
 
         // Execute
         var controller = _autoMoq.CreateInstance<RegrasController>();
@@ -107,7 +107,7 @@ public class RegrasControllerTests
     public void GetAll()
     {
         // Setup
-        Mock<RegrasService> serviceMock = _autoMoq.GetMock<RegrasService>();
+        Mock<IRegrasService> serviceMock = _autoMoq.GetMock<IRegrasService>();
 
         serviceMock.Setup(serv => serv.ListarTodas())
             .Returns((new RegraResumoDtoFaker()).Generate(_faker.Random.Int(1, 10)))
@@ -130,7 +130,7 @@ public class RegrasControllerTests
     {
         // Setup
         string id = _faker.Random.Hash();
-        Mock<RegrasService> serviceMock = _autoMoq.GetMock<RegrasService>();
+        Mock<IRegrasService> serviceMock = _autoMoq.GetMock<IRegrasService>();
 
         serviceMock.Setup(serv => serv.ObterPorId(id))
             .Returns<string>(id =>
@@ -165,7 +165,7 @@ public class RegrasControllerTests
     {
         // Setup
         string id = _faker.Random.Hash();
-        Mock<RegrasService> serviceMock = _autoMoq.GetMock<RegrasService>();
+        Mock<IRegrasService> serviceMock = _autoMoq.GetMock<IRegrasService>();
 
         serviceMock.Setup(serv => serv.ObterPorId(id))
             .Returns((Regra)null)

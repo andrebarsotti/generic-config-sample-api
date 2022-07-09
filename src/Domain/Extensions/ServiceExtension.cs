@@ -15,7 +15,7 @@ public static class ServiceExtension
 {
     public static void AddDomainServicesAndValidators(this IServiceCollection services)
     {
-        services.AddScoped <RegrasService, RegrasServiceImpl>();
+        services.AddScoped<IRegrasService, RegrasService>();
         services.AddScoped<IValidator<RegraDto>, RegraDtoValidator>();
     }
 }

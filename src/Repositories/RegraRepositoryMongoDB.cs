@@ -8,7 +8,7 @@ using Domain.Repositories;
 
 using MongoDB.Driver;
 
-public class RegraRepositoryMongoDB : RegraRepository
+public class RegraRepositoryMongoDB : IRegraRepository
 {
     private readonly IMongoCollection<Regra> _colecao;
 

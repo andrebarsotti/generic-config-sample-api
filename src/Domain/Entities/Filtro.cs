@@ -2,18 +2,18 @@ namespace Domain.Entities;
 
 using Domain.Enums;
 
-public interface Filtro
+public interface IFiltro
 {
     Tipo Tipo { get; }
     string Nome { get; }
 }
 
-public interface Filtro<T> : Filtro
+public interface IFiltro<out T> : IFiltro
 {
     T Valor { get; }
 }
 
-public abstract class FiltroAbstrato<T> : Filtro<T>
+public abstract class FiltroAbstrato<T> : IFiltro<T>
 {
     public abstract Tipo Tipo { get; }
 

@@ -43,13 +43,13 @@ public class RegrasServiceImpTests
     {
         // Setup
         RegraDto dto = new RegraDtoFaker();
-        Mock<RegraRepository> mock = _autoMoq.GetMock<RegraRepository>();
+        Mock<IRegraRepository> mock = _autoMoq.GetMock<IRegraRepository>();
         mock.Setup(repo => repo.Add(It.IsAny<Regra>()))
             .Callback<Regra>((regra) => regra.Id = _faker.Random.Hash())
             .Verifiable();
         
         // Execute
-        var service = _autoMoq.CreateInstance<RegrasServiceImpl>();
+        var service = _autoMoq.CreateInstance<RegrasService>();
         Regra resultado = service.Adicionar(dto);
 
         // Validar
@@ -68,13 +68,13 @@ public class RegrasServiceImpTests
         Regra regra = new RegraFaker();
         string id = _faker.Random.Hash();
 
-        Mock<RegraRepository> mock = _autoMoq.GetMock<RegraRepository>();
+        Mock<IRegraRepository> mock = _autoMoq.GetMock<IRegraRepository>();
         mock.Setup(repo => repo.GetRegraById(id))
             .Returns(regra)
             .Verifiable();
 
         // Execute
-        var service = _autoMoq.CreateInstance<RegrasServiceImpl>();
+        var service = _autoMoq.CreateInstance<RegrasService>();
         Regra resultado = service.ObterPorId(id);
 
         // Validar
@@ -88,13 +88,13 @@ public class RegrasServiceImpTests
         // Setup
         IEnumerable<RegraResumoDto> lista = RegraResumoDtoFaker.GerarLista();
 
-        Mock<RegraRepository> mock = _autoMoq.GetMock<RegraRepository>();
+        Mock<IRegraRepository> mock = _autoMoq.GetMock<IRegraRepository>();
         mock.Setup(repo => repo.GetAll())
             .Returns(lista)
             .Verifiable();
 
         // Execute
-        var service = _autoMoq.CreateInstance<RegrasServiceImpl>();
+        var service = _autoMoq.CreateInstance<RegrasService>();
         IEnumerable<RegraResumoDto> resultado = service.ListarTodas();
 
         // Validar
