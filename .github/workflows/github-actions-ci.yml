@@ -1,9 +1,9 @@
 name: ci-action
 
-on: 
+on:
   push:
-   branches:
-      - master
+  #  branches:
+  #     - master
 
   pull_request:
       types: [opened, synchronize, reopened]
