@@ -21,7 +21,7 @@ public sealed class FiltroVMToFiltroConverter : ITypeConverter<FiltroVM, IFiltro
             _ => ConverterParaFiltroValor(source)
         };
 
-    private FiltroValor ConverterParaFiltroValor(FiltroVM source)
+    private static FiltroValor ConverterParaFiltroValor(FiltroVM source)
     {
         FiltroValor resultado = new();
         
@@ -31,7 +31,7 @@ public sealed class FiltroVMToFiltroConverter : ITypeConverter<FiltroVM, IFiltro
         return resultado;
     }
 
-    private FiltroRange ConverterParaFiltroRange(FiltroVM source, ResolutionContext context)
+    private static FiltroRange ConverterParaFiltroRange(FiltroVM source, ResolutionContext context)
     {
         FiltroRange resultado = new();
         RangeVM rangeVm = new();
@@ -45,7 +45,7 @@ public sealed class FiltroVMToFiltroConverter : ITypeConverter<FiltroVM, IFiltro
         return resultado;
     }
 
-    private FiltroLista ConverterParaFiltroLista(FiltroVM source, ResolutionContext context)
+    private static FiltroLista ConverterParaFiltroLista(FiltroVM source, ResolutionContext context)
     {
         IEnumerable<ItemListaVM> lista = new List<ItemListaVM>();
 
