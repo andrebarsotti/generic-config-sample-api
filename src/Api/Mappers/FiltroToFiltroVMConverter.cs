@@ -26,9 +26,9 @@ public sealed class FiltroToFiltroVMConverter : ITypeConverter<IFiltro, FiltroVM
             }
         };
 
-    private JsonElement ConverterFiltroRange(Range valor, ResolutionContext context)
+    private static JsonElement ConverterFiltroRange(Range valor, ResolutionContext context)
         => JsonSerializer.SerializeToElement(context.Mapper.Map<RangeVM>(valor));
 
-    private JsonElement ConverterFiltroLista(IEnumerable<ItemLista> valor, ResolutionContext context)
+    private static JsonElement ConverterFiltroLista(IEnumerable<ItemLista> valor, ResolutionContext context)
         => JsonSerializer.SerializeToElement(context.Mapper.Map<IEnumerable<ItemListaVM>>(valor));
 }
