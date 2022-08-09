@@ -1,5 +1,15 @@
 name: ci-action
-on: [push]
+on: 
+  push:
+    - 'main'
+    - 'release/**'
+  
+  pull_request:
+    types:
+      -opened    
+    branches:
+      - 'main'
+      - 'release/**'
 
 permissions:
   contents: read
