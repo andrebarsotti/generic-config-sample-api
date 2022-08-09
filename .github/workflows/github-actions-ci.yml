@@ -18,9 +18,9 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
-      - name: Install SonarCloud scanners
+      - name: Restore dotnet tool packages
         run: |
-          dotnet tool install dotnet-sonarscanner
+          dotnet tool restore
 
       - name: Build and analyze
         env:
