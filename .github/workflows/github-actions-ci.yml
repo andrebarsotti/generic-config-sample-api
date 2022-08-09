@@ -25,8 +25,8 @@ jobs:
       #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Install SonarCloud scanners
-            run: |
-              dotnet tool install --global dotnet-sonarscanner
+        run: |
+          dotnet tool install --global dotnet-sonarscanner
 
       - name: Build and analyze
         env:
