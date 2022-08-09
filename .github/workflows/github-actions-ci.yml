@@ -2,11 +2,11 @@ name: ci-action
 
 on:
   push:
-  #  branches:
-  #     - master
+    branches:
+      - master
 
   pull_request:
-      types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened]
     branches:
       - 'main'
       - 'release/**'
@@ -42,3 +42,4 @@ jobs:
           dotnet test tests/ApiTests/ApiTests.csproj --no-build
           dotnet test tests/Domain/DomainTests.csproj --no-build
           dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          
