@@ -8,7 +8,9 @@ on:
   
   pull_request:
     types:
-      -opened    
+      - opened
+      - edited
+      - reopened
     branches:
       - 'main'
       - 'release/**'
