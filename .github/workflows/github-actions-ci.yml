@@ -1,8 +1,10 @@
 name: ci-action
+
 on: 
   push:
-    - 'main'
-    - 'release/**'
+    branches:
+      - 'main'
+      - 'release/**'
   
   pull_request:
     types:
