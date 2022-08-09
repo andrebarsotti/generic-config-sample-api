@@ -44,24 +44,19 @@ public class FiltroVMFaker : Faker<FiltroVM>
         
     }
 
-    private JsonElement GerarValor(Faker fk, FiltroVM filtroVm)
-    {
-        return filtroVm.Tipo switch
+    private static JsonElement GerarValor(Faker fk, FiltroVM filtroVm) =>
+        filtroVm.Tipo switch
         {
             Tipo.Lista => GerarLista(),
             Tipo.Range => GerarRange(),
             Tipo.Valor => JsonSerializer.SerializeToElement(fk.Lorem.Sentence()),
             _ => throw new NotImplementedException()
-        }; 
-    }
+        };
 
-    private JsonElement GerarRange()
-    {
-        var rangeFaker = new RangeVMFaker();
-        return JsonSerializer.SerializeToElement(rangeFaker.Generate());
-    }
+    private static JsonElement GerarRange() 
+        => JsonSerializer.SerializeToElement(new RangeVMFaker().Generate());
 
-    private JsonElement GerarLista()
+    private static JsonElement GerarLista()
         => JsonSerializer.SerializeToElement(ItemListaVMFaker.GerarLista());
 }
 
