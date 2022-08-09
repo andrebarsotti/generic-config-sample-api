@@ -18,17 +18,26 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+      # - name: SonarCloud Scan
+      #   uses: SonarSource/sonarcloud-github-action@master
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Install SonarCloud scanners
+            run: |
+              dotnet tool install --global dotnet-sonarscanner
+
+      - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet sonarscanner begin /k:"andrebarsotti_generic-config-sample-api" /o:"andrebarsotti" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          dotnet build
+          dotnet test tests/ApiTests/ApiTests.csproj --no-build
+          dotnet test tests/Domain/DomainTests.csproj --no-build
+          dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
-      - name: Build
-        run: dotnet build
-
-      - name: Running Api Tests
-        run: dotnet test tests/ApiTests/ApiTests.csproj --no-build
-
-      - name: Running Domain Tests
-        run: dotnet test tests/Domain/DomainTests.csproj --no-build        
+      # - name: Build
+      #   run: dotnet build
