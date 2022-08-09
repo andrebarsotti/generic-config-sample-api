@@ -1,18 +1,18 @@
 name: ci-action-pr
 
-on: 
-  push:
-    branches:
-      - 'main'
-      - 'release/**'
-  pull_request:
-    types:
-      - opened
-      - edited
-      - reopened
-    branches:
-      - 'main'
-      - 'release/**'
+on: [push]
+  # push:
+  #   branches:
+  #     - 'main'
+  #     - 'release/**'
+  # pull_request:
+  #   types:
+  #     - opened
+  #     - edited
+  #     - reopened
+  #   branches:
+  #     - 'main'
+  #     - 'release/**'
 
 permissions:
   contents: read
@@ -31,17 +31,14 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
-      - name: Restore dotnet tool packages
-        run: |
-          dotnet tool restore
-
-      - name: Build and analyze
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Build and test
         run: |
-          dotnet sonarscanner begin /k:"andrebarsotti_generic-config-sample-api" /o:"andrebarsotti" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build
           dotnet test tests/ApiTests/ApiTests.csproj --no-build
           dotnet test tests/Domain/DomainTests.csproj --no-build
-          dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
