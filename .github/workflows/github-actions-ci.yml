@@ -46,6 +46,7 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar-scanner
 
       - name: Install SonarScanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         run: dotnet tool install dotnet-sonarscanner --tool-path ./.sonar/scanner
 
       - name: Build and analyze
