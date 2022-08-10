@@ -28,17 +28,35 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
-      - name: Restore dotnet tool packages
-        run: |
-          dotnet tool restore
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v1
+        with:
+          path: ~/sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Cache SonarCloud scanner
+        id: cache-sonar-scanner
+        uses: actions/cache@v1
+        with:
+          path: ./.sonar/scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+
+      - name: Install SonarScanner
+        run: dotnet tool install dotnet-sonarscanner --tool-path ./.sonar/scanner
 
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          dotnet sonarscanner begin /k:"andrebarsotti_generic-config-sample-api" /o:"andrebarsotti" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" 
-          dotnet build
-          dotnet test --no-build --filter FullyQualifiedName\!~RepositoryTest --collect coverage
+          dotnet sonarscanner begin /k:"andrebarsotti_generic-config-sample-api" \
+                                    /o:"andrebarsotti" \
+                                    /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
+                                    /d:sonar.host.url="https://sonarcloud.io" \
+                                    /d:sonar.cs.opencover.reportsPaths="**/covarage.*.xml"
+          dotnet restore --force --no-cache
+          dotnet build --no-restore 
+          dotnet test --no-build --filter FullyQualifiedName\!~RepositoryTest --collect:"XPlat Code Coverage"
           dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-          
