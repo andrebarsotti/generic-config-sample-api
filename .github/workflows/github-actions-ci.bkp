@@ -55,26 +55,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_KEY: "andrebarsotti_generic-config-sample-api"
-          SONAR_ORG: "andrebarsotti"
-          SONAR_URL: "https://sonarcloud.io"
-          SONAR_TEST_PARAM: sonar.cs.opencover.reportsPaths
-          SONAR_TEST_FILE: "**/coverage.opencover.xml"
-          SONAR_EXCLUSION: "**/Program.cs" #Patern dos arquivos separados por virgula
-        # Para excluir certos testes
-        # dotnet test --filter FullyQualifiedName\!~RepositoryTest /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
         run: |
-          ./.sonar/scanner/dotnet-sonarscanner begin /k:"$SONAR_KEY" /o:"$SONAR_ORG" /d:sonar.login="$SONAR_TOKEN" /d:sonar.host.url="$SONAR_URL" /d:$SONAR_TEST_PARAM="$SONAR_TEST_FILE" /d:sonar.coverage.exclusions="$SONAR_EXCLUSION"
+          ./.sonar/scanner/dotnet-sonarscanner begin /k:"andrebarsotti_generic-config-sample-api" /o:"andrebarsotti" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.coverage.exclusions="**/Program.cs,tests/Repositories/**/*,src/Repositories/**/*"
           dotnet restore --force --no-cache
           dotnet build --no-restore 
-          dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-          ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="$SONAR_TOKEN"
-
-    # Serviços utilizados para os testes de integração
-    services:
-      # Label used to access the service container
-      mongo-db:
-        # Docker Hub image
-        image: mongo
-        ports: 
-          - 27017:27017
+          dotnet test --filter FullyQualifiedName\!~RepositoryTest /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+          ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
