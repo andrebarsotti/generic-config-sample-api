@@ -67,7 +67,7 @@ jobs:
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"$SONAR_KEY" /o:"$SONAR_ORG" /d:sonar.login="$SONAR_TOKEN" /d:sonar.host.url="$SONAR_URL" /d:$SONAR_TEST_PARAM="$SONAR_TEST_FILE" /d:sonar.coverage.exclusions="$SONAR_EXCLUSION"
           dotnet restore --force --no-cache
           dotnet build --no-restore 
-          dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+          dotnet test --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="$SONAR_TOKEN"
 
     # Serviços utilizados para os testes de integração
