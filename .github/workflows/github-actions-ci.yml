@@ -63,6 +63,9 @@ jobs:
           SONAR_EXCLUSION: "**/Program.cs" #Patern dos arquivos separados por virgula
         # Para excluir certos testes
         # dotnet test --filter FullyQualifiedName\!~RepositoryTest /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+        
+        # Para conseguir a cobertura de testes os projetos de teste precisam ter a biblioteca "coverlet.msbuild" adicionada
+        # nas referências.
         run: |
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"$SONAR_KEY" /o:"$SONAR_ORG" /d:sonar.login="$SONAR_TOKEN" /d:sonar.host.url="$SONAR_URL" /d:$SONAR_TEST_PARAM="$SONAR_TEST_FILE" /d:sonar.coverage.exclusions="$SONAR_EXCLUSION"
           dotnet restore --force --no-cache
