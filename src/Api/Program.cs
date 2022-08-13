@@ -1,5 +1,12 @@
 using Api.Extensions;
 using Domain.Extensions;
+
+using HealthChecks.UI.Client;
+
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+
+using Repositories;
 using Repositories.Extensions;
 using Serilog;
 
@@ -29,6 +36,13 @@ try
     builder.Services.AddMongoDBRepositories(builder.Configuration);
     Log.Information("Configurados servicos da aplicacao");
 
+    builder.Services.AddHealthChecks()
+                    .AddCheck("self", () => HealthCheckResult.Healthy())
+                    .AddMongoDb(builder.Configuration.GetConnectionString(DBConstants.ConnectionStringName), 
+                                name: "database",
+                                tags: new [] {"db", "deps"});
+    Log.Information("Configurados HealthChecks");
+
     var app = builder.Build();
 
     // Configure the HTTP request pipeline.
@@ -42,6 +56,21 @@ try
     app.UseAuthorization();
     app.MapControllers();
     Log.Information("Aplicacao configurada");
+
+    app.UseRouting();
+    app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapHealthChecks("/health", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+            endpoints.MapHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
+            });
+        });
+    Log.Information("Configurados endpoinst de HealthChecks");
 
     Log.Information("Inciando aplicacao");
     app.Run();
