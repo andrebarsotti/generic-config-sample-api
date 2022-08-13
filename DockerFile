@@ -6,7 +6,9 @@ COPY src/ /app/
 RUN dotnet restore /app/Api/Api.csproj
 RUN dotnet publish /app/Api/Api.csproj --no-restore -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine
+
+RUN apk add --no-cache bash
 
 COPY scripts/init_container.sh /bin/
 RUN chmod 755 /bin/init_container.sh
