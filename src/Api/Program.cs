@@ -52,12 +52,18 @@ try
         app.UseSwaggerUI();
     }
 
-    app.UseHttpsRedirection();
+    app.UseRouting();
+
+    if (app.Configuration.GetSection("ActivateHttps").Get<bool>())
+    {
+        app.UseHttpsRedirection();
+        Log.Information("Sem https redirection");
+    }
+
     app.UseAuthorization();
     app.MapControllers();
     Log.Information("Aplicacao configurada");
 
-    app.UseRouting();
     app.UseEndpoints(endpoints =>
         {
             endpoints.MapHealthChecks("/health", new HealthCheckOptions()

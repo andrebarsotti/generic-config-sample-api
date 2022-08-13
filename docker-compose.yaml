@@ -1,0 +1,30 @@
+version: '3.4'
+
+# Se for necessário mudar as portas, nome do registry ou tag crie um arquivo .env e acrescente os parâmetros necessários.
+
+services:
+  seq:
+    image: datalust/seq:latest
+    ports: 
+      - "${SEQ_PORT:-5341}:80"
+    environment:
+      - ACCEPT_EULA=Y
+
+  database:
+    image: mongo
+
+  generic-api:
+    image: ${REGISTRY:-genericconfigsampleapi}:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: ./DockerFile
+    depends_on:
+      - seq
+      - database
+    environment:
+      - ConnectionStrings__mongodb=mongodb://database:27017
+      - MongoDBDatabbase=generic_config_sample
+      - Serilog__WriteTo__0__Name=Seq
+      - Serilog__WriteTo__0__Args__serverUrl=http://seq
+    ports: 
+      - "${API_PORT:-8080}:80"
