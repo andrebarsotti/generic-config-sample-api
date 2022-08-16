@@ -23,9 +23,6 @@ jobs:
       pull-requests: read
 
     steps:
-      - name: Echo GITHUB_REF
-        run: echo running on branch ${{ github.ref_name }}
-
       - name: Checkout
         uses: actions/checkout@v3
         with:
