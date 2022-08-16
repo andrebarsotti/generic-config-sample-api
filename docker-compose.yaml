@@ -14,7 +14,7 @@ services:
     image: mongo
 
   generic-api:
-    image: ${REGISTRY:-genericconfigsampleapi}:${TAG:-latest}
+    image: ${REGISTRY:-ghcr.io/andrebarsotti/generic-config-sample-api}:${TAG:-latest}
     build:
       context: .
       dockerfile: ./DockerFile
