@@ -35,7 +35,8 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
+          file: DockerFile
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          secrets: |
-            GIT_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          # secrets: |
+          #   GIT_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}
