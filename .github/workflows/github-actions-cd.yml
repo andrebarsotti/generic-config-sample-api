@@ -2,14 +2,15 @@ name: cd-action
 
 on:
   push:
-    # branches:
-    #   - 'main'
-    #   - 'release/**'
+    branches:
+      - 'main'
+      - 'release/**'
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }} 
   REGISTRY_USER: ${{ github.actor }}
+  REGISTRY_PWD: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   build-and-publish:
@@ -39,7 +40,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ env.REGISTRY_USER }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ env.REGISTRY_PWD }}
 
       - name: Build and push
         uses: docker/build-push-action@v3
