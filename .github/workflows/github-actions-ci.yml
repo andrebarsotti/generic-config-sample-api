@@ -3,8 +3,8 @@ name: ci-action
 on:
   push:
     branches:
-      # - 'main'
-      # - 'release/**'
+      - 'main'
+      - 'release/**'
 
   pull_request:
     types: [opened, synchronize, reopened]
@@ -28,16 +28,8 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v3
-        #if: ${{ github.event_name != 'workflow_dispatch' }}
         with:
           fetch-depth: 0
-
-      # - name: Workflow Dispach Checkout
-      #   uses: actions/checkout@v3
-      #   if: ${{ github.event_name == 'workflow_dispatch' }}
-      #   with:
-      #     fetch-depth: 0
-      #     ref: ${{ github.ref }}
 
       - name: Setup .Net
         uses: actions/setup-dotnet@v2
@@ -79,7 +71,6 @@ jobs:
         # Para conseguir a cobertura de testes os projetos de teste precisam ter a biblioteca "coverlet.msbuild" adicionada
         # nas referências.
         run: |
-          git branch 
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"$SONAR_KEY" /o:"$SONAR_ORG" /d:sonar.login="$SONAR_TOKEN" /d:sonar.host.url="$SONAR_URL" /d:$SONAR_TEST_PARAM="$SONAR_TEST_FILE" /d:sonar.coverage.exclusions="$SONAR_EXCLUSION"
           dotnet restore --force --no-cache
           dotnet build --no-restore 
