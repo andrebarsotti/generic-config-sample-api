@@ -12,13 +12,14 @@ env:
   REGISTRY_USER: ${{ github.actor }}
   REGISTRY_PWD: ${{ secrets.GITHUB_TOKEN }}
 
-permissions:
-  contents: read
-  packages: write
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-20.04
+    
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       # - name: Set up QEMU
