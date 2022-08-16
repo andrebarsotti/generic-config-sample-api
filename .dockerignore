@@ -448,10 +448,16 @@ $RECYCLE.BIN/
 ## Visual Studio Code
 ##
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
 
-# Remove .env file
+
+# Additional files
+.dockerignore
 .env
+.git*
+.editorconfig
+Dockerfile
+docker-compose*.yml
+*.md
+hosts
+LICENSE
+**/appsettings.Development.json
