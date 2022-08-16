@@ -23,11 +23,22 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Checkout
+      - name: Echo GITHUB_REF
+        run: echo running on branch ${GITHUB_REF##*/}
+
+      - name: Usual Checkout
         uses: actions/checkout@v3
+        if: ${{ github.event_name != 'workflow_dispatch' }}
         with:
           fetch-depth: 0
-          
+
+      - name: Workflow Dispach Checkout
+        uses: actions/checkout@v3
+        if: ${{ github.event_name === 'workflow_dispatch' }}
+        with:
+          fetch-depth: 0
+          ref: ${GITHUB_REF##*/}
+
       - name: Setup .Net
         uses: actions/setup-dotnet@v2
         with:
