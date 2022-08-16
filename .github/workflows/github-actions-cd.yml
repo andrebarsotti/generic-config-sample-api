@@ -30,9 +30,9 @@ jobs:
           tags: |
             type=ref,event=branch
             type=raw,value=latest,enable={{is_default_branch}}
-          labels: |
-            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+          # labels: |
+          #   org.opencontainers.image.source=https://github.com/${{ github.repository }}
 
       - name: Print metada
         run: |
-          echo "${{ steps.meta.outputs.tags }}\n\n${{ steps.meta.outputs.labels }}\n\n"
+          printf "${{ steps.meta.outputs.tags }}\n\n${{ steps.meta.outputs.labels }}\n\n"
