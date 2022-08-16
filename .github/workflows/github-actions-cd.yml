@@ -35,4 +35,4 @@ jobs:
 
       - name: Print metada
         run: |
-          echo ${{ steps.meta.outputs.tags }} && echo ${{ steps.meta.outputs.labels }}
+          echo "${{ steps.meta.outputs.tags }}\n\n${{ steps.meta.outputs.labels }}\n\n"
