@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: Echo GITHUB_REF
-        run: echo running on branch ${{ github.ref }}
+        run: echo running on branch ${{ github.ref_name }}
 
       - name: Usual Checkout
         uses: actions/checkout@v3
@@ -37,7 +37,7 @@ jobs:
         if: ${{ github.event_name == 'workflow_dispatch' }}
         with:
           fetch-depth: 0
-          ref: ${GITHUB_REF##*/}
+          ref: ${{ github.ref_name }}
 
       - name: Setup .Net
         uses: actions/setup-dotnet@v2
