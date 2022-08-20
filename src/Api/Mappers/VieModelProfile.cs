@@ -14,7 +14,7 @@ public sealed class VieModelProfile: Profile
     public VieModelProfile()
     {
         CreateMap<RegraVM, RegraDto>()
-            .ForMember(src => src.Responsavel, opt => opt.MapFrom(src => src.IncluidoPor));
+            .ForMember(src => src.Responsavel, opt => opt.Ignore());
         CreateMap<Regra, RegraVM>();
         
         CreateMap<RegraResumoDto, RegraResumoVM>().ReverseMap();
