@@ -9,9 +9,6 @@ public class RegraVM
 
     [JsonPropertyName("dataInlcusao")]
     public virtual DateTime? DataInclusao { get; set; }
-
-    [JsonPropertyName("incluidoPor")]
-    public virtual string IncluidoPor { get; set; }
     
     [JsonPropertyName("filtros")]
     public virtual ICollection<FiltroVM> Filtros { get; set; }

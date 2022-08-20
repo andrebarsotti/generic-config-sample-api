@@ -15,7 +15,6 @@ public sealed class RegraVMFaker : Faker<RegraVM>
     {
         RuleFor(e => e.Nome, fk => fk.Lorem.Sentence());
         RuleFor(e => e.DataInclusao, fk => fk.Date.Recent());
-        RuleFor(e => e.IncluidoPor, fk => fk.Person.FullName);
         RuleFor(e => e.Filtros, fk => (new FiltroVMFaker()).Generate(fk.Random.Int(1,10)));
 
         RuleSet(ComUmFiltroDeCada, set =>
