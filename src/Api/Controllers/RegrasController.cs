@@ -1,6 +1,6 @@
-﻿
-using Api.Mappers;
-using Api.ViewModels;
+﻿using Api.ViewModels;
+
+using AutoMapper;
 
 using Domain.Dto;
 using Domain.Entities;
@@ -19,19 +19,22 @@ public class RegrasController : ControllerBase
 {
     private readonly IRegrasService _service;
     private readonly IValidator<RegraDto> _validator;
+    private readonly IMapper _mapper;
 
     public RegrasController(IRegrasService servie,
-                            IValidator<RegraDto> validator)
+                            IValidator<RegraDto> validator,
+                            IMapper mapper)
     {
         _service = servie;
         _validator = validator;
+        _mapper = mapper;
     }
 
     [HttpPost]
     public IActionResult Post([FromBody] RegraVM model)
     {
 
-        RegraDto regraDto = model.ToRegraDto();
+        var regraDto = _mapper.Map<RegraDto>(model);
         regraDto.Responsavel = "João da Silva";
 
         ValidationResult validation = _validator.Validate(regraDto);
@@ -47,13 +50,13 @@ public class RegrasController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult Get() => Ok(_service.ListarTodas());
+    public IActionResult Get() => Ok(_mapper.Map<IEnumerable<RegraResumoVM>>(_service.ListarTodas()));
 
     [HttpGet("{id}")]
     public IActionResult Get(string id)
     {
         Regra regra = _service.ObterPorId(id);
 
-        return regra is not null ? Ok(regra.ToRegraVM()) : NotFound();
+        return regra is not null ? Ok(_mapper.Map<RegraVM>(regra)) : NotFound();
     }
 }

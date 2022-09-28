@@ -15,13 +15,13 @@ public class FiltroTests
     [InlineData(Tipo.Valor)]
     public void ConverterParaTipoEspecifico(Tipo tipo)
     {
-        Filtro filtro = FiltroFaker.GerarFiltro(tipo);
+        IFiltro filtro = FiltroFaker.GerarFiltro(tipo);
 
         ValidarFiltro(filtro);
     }
 
     #pragma warning disable xUnit1013
-    public static void ValidarFiltro(Filtro filtro)
+    public static void ValidarFiltro(IFiltro filtro)
     {
         switch (filtro.Tipo)
         {
@@ -37,7 +37,7 @@ public class FiltroTests
         }
     }
 
-    private static void ValidarTipoValor(Filtro filtro)
+    private static void ValidarTipoValor(IFiltro filtro)
     {
         FiltroValor filtroConvertido = (FiltroValor)filtro;
 
@@ -45,7 +45,7 @@ public class FiltroTests
         filtroConvertido.Valor.Should().NotBeNullOrEmpty();
     }
 
-    private static void ValidarTipoRange(Filtro filtro)
+    private static void ValidarTipoRange(IFiltro filtro)
     {
         FiltroRange filtroConvertido = (FiltroRange)filtro;
 
@@ -56,7 +56,7 @@ public class FiltroTests
                                            .BeGreaterThan(filtroConvertido.Valor.De);
     }
 
-    private static void ValidarTipoLista(Filtro filtro)
+    private static void ValidarTipoLista(IFiltro filtro)
     {
         FiltroLista filtroConvertido = (FiltroLista)filtro;
 

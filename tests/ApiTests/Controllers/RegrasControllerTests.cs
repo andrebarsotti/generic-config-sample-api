@@ -1,12 +1,16 @@
 ﻿
+using Api.Mappers;
 using Api.ViewModels;
 using Api.ViewModels.Fakers;
+
+using AutoMapper;
 
 using Bogus;
 
 using Domain.Dto;
 using Domain.Entities;
 using Domain.Entities.Fakers;
+using Domain.Enums;
 using Domain.Services;
 
 using DomainTests.Dto.Fakers;
@@ -36,6 +40,10 @@ public class RegrasControllerTests
     {
         _autoMoq = new AutoMocker();
         _faker = new Faker();
+        _autoMoq.Use<IMapper>(new Mapper(new MapperConfiguration(cfg =>
+        {
+            cfg.AddProfile<VieModelProfile>();
+        })));
     }
 
     [Fact]
@@ -125,7 +133,18 @@ public class RegrasControllerTests
         Mock<IRegrasService> serviceMock = _autoMoq.GetMock<IRegrasService>();
 
         serviceMock.Setup(serv => serv.ObterPorId(id))
-            .Returns((new RegraFaker()).Generate($"default,{RegraFaker.RuleSetRegraComId}"))
+            .Returns<string>(id =>
+            {
+                Regra regra = new RegraFaker();
+                
+                regra.Id = id;
+                regra.Filtros.Clear();
+                regra.Filtros.Add(FiltroFaker.GerarFiltro(Tipo.Lista));
+                regra.Filtros.Add(FiltroFaker.GerarFiltro(Tipo.Range));
+                regra.Filtros.Add(FiltroFaker.GerarFiltro(Tipo.Valor));
+                
+                return regra;
+            })
             .Verifiable();
 
         // Execute

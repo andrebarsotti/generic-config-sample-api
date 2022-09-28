@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 
+using AutoMapper;
+
 using Bogus;
 
 using Domain.Dto;
 using Domain.Dto.Fakers;
 using Domain.Entities;
 using Domain.Entities.Fakers;
+using Domain.Mappers;
 using Domain.Repositories;
 
 using DomainTests.Dto.Fakers;
@@ -20,15 +23,19 @@ using Xunit;
 namespace Domain.Services;
 
 
-public class RegrasServiceTests
+public class RegrasServiceImpTests
 {
     private readonly AutoMocker _autoMoq;
     private readonly Faker _faker;
 
-    public RegrasServiceTests()
+    public RegrasServiceImpTests()
     {
         _autoMoq = new AutoMocker();
         _faker = new Faker();
+        _autoMoq.Use<IMapper>(new Mapper(new MapperConfiguration(cfg =>
+        {
+            cfg.AddProfile<RegraDtoProfile>();
+        })));
     }
 
     [Fact]
@@ -36,7 +43,7 @@ public class RegrasServiceTests
     {
         // Setup
         RegraDto dto = new RegraDtoFaker();
-        Mock<RegraRepository> mock = _autoMoq.GetMock<RegraRepository>();
+        Mock<IRegraRepository> mock = _autoMoq.GetMock<IRegraRepository>();
         mock.Setup(repo => repo.Add(It.IsAny<Regra>()))
             .Callback<Regra>((regra) => regra.Id = _faker.Random.Hash())
             .Verifiable();
@@ -61,7 +68,7 @@ public class RegrasServiceTests
         Regra regra = new RegraFaker();
         string id = _faker.Random.Hash();
 
-        Mock<RegraRepository> mock = _autoMoq.GetMock<RegraRepository>();
+        Mock<IRegraRepository> mock = _autoMoq.GetMock<IRegraRepository>();
         mock.Setup(repo => repo.GetRegraById(id))
             .Returns(regra)
             .Verifiable();
@@ -81,7 +88,7 @@ public class RegrasServiceTests
         // Setup
         IEnumerable<RegraResumoDto> lista = RegraResumoDtoFaker.GerarLista();
 
-        Mock<RegraRepository> mock = _autoMoq.GetMock<RegraRepository>();
+        Mock<IRegraRepository> mock = _autoMoq.GetMock<IRegraRepository>();
         mock.Setup(repo => repo.GetAll())
             .Returns(lista)
             .Verifiable();

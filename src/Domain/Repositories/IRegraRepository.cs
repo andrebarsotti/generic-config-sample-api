@@ -3,7 +3,7 @@ using Domain.Entities;
 
 namespace Domain.Repositories
 {
-    public interface RegraRepository
+    public interface IRegraRepository
     {
         void Add(Regra valor);
 

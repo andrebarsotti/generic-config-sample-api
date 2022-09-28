@@ -1,0 +1,84 @@
+name: ci-action
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'release/**'
+
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - 'main'
+      - 'release/**'
+  
+  workflow_dispatch:
+
+jobs:
+  build-and-tests:
+    runs-on: ubuntu-20.04
+
+    permissions:
+      contents: read
+      pull-requests: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup .Net
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v1
+        with:
+          path: ~/sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Cache SonarCloud scanner
+        id: cache-sonar-scanner
+        uses: actions/cache@v1
+        with:
+          path: ./.sonar/scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+
+      - name: Install SonarScanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        run: dotnet tool install dotnet-sonarscanner --tool-path ./.sonar/scanner
+
+      - name: Build and analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_KEY: "andrebarsotti_generic-config-sample-api"
+          SONAR_ORG: "andrebarsotti"
+          SONAR_URL: "https://sonarcloud.io"
+          SONAR_TEST_PARAM: sonar.cs.opencover.reportsPaths
+          SONAR_TEST_FILE: "**/coverage.opencover.xml"
+          SONAR_EXCLUSION: "**/Program.cs" #Patern dos arquivos separados por virgula
+        # Para excluir certos testes
+        # dotnet test --filter FullyQualifiedName\!~RepositoryTest /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+        
+        # Para conseguir a cobertura de testes os projetos de teste precisam ter a biblioteca "coverlet.msbuild" adicionada
+        # nas referências.
+        run: |
+          ./.sonar/scanner/dotnet-sonarscanner begin /k:"$SONAR_KEY" /o:"$SONAR_ORG" /d:sonar.login="$SONAR_TOKEN" /d:sonar.host.url="$SONAR_URL" /d:$SONAR_TEST_PARAM="$SONAR_TEST_FILE" /d:sonar.coverage.exclusions="$SONAR_EXCLUSION"
+          dotnet restore --force --no-cache
+          dotnet build --no-restore 
+          dotnet test --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+          ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="$SONAR_TOKEN"
+
+    # Serviços utilizados para os testes de integração
+    services:
+      # Label used to access the service container
+      mongo-db:
+        # Docker Hub image
+        image: mongo
+        ports: 
+          - 27017:27017

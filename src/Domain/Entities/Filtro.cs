@@ -2,31 +2,22 @@ namespace Domain.Entities;
 
 using Domain.Enums;
 
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-
-public interface Filtro
+public interface IFiltro
 {
     Tipo Tipo { get; }
     string Nome { get; }
 }
 
-public interface Filtro<T> : Filtro
+public interface IFiltro<out T> : IFiltro
 {
     T Valor { get; }
 }
 
-[Serializable]
-public abstract class FiltroAbstrato<T> : Filtro<T>
+public abstract class FiltroAbstrato<T> : IFiltro<T>
 {
-    [BsonElement("tipo", Order = 1)]
-    [BsonRepresentation(BsonType.String)]
     public abstract Tipo Tipo { get; }
 
-    [BsonElement("nome", Order = 2)]
-    [BsonRepresentation(BsonType.String)]
     public virtual string Nome { get; set; }
 
-    [BsonElement("valor", Order = 3)]
     public virtual T Valor { get; set; } 
 }

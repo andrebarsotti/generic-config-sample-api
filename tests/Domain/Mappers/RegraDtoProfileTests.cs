@@ -1,4 +1,6 @@
-﻿using Domain.Dto;
+﻿using AutoMapper;
+
+using Domain.Dto;
 using Domain.Dto.Fakers;
 using Domain.Entities;
 
@@ -8,8 +10,18 @@ using Xunit;
 
 namespace Domain.Mappers;
 
-public class RegraDtoMapperTests
+public class RegraDtoProfileTests
 {
+    private readonly IMapper _mapper;
+
+    public RegraDtoProfileTests()
+    {
+        _mapper = new Mapper(new MapperConfiguration(cfg =>
+        {
+            cfg.AddProfile<RegraDtoProfile>();
+        }));
+    }
+
     [Fact]
     public void Mapper()
     {
@@ -17,7 +29,7 @@ public class RegraDtoMapperTests
         RegraDto dto = new RegraDtoFaker();
 
         // Executar
-        Regra resultado = RegraDtoMapper.ToRegra(dto);
+        var resultado = _mapper.Map<Regra>(dto);
 
         // Validação
         resultado.Should().NotBeNull()
